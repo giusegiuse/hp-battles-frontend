@@ -1,4 +1,4 @@
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import {CharacterServiceService} from "../services/character-service.service";
 import {Injectable} from "@angular/core";
 
@@ -6,7 +6,7 @@ import {Injectable} from "@angular/core";
   providedIn: 'root'
 })
 
-export class CharacterResolver implements Resolve<any> {
+export class CharacterResolver  {
 
   constructor(
     private characterService: CharacterServiceService
