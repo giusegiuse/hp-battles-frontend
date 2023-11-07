@@ -1,0 +1,25 @@
+<div *ngFor="let character of characters" class="character-card">
+  <div class="character-name">{{character.name}}</div>
+
+
+  <div class="image-section">
+    <img [src]="character.image">
+  </div>
+    <div class="info-section">
+      <div class="ability"><img src="./assets/icons/lightning.png">
+        <div class="ability-bar"></div>
+        <div class="ability-bar" [style.width.%]="character.strength"></div>
+        <div class="ability-score"><b> {{character.strength}}</b></div>
+      </div>
+
+      <div class="ability"><img src="./assets/icons/heart%20(1).png">
+        <div class="ability-bar" [style.width.%]="character.life"></div>
+        <div class="ability-score" ><b>{{character.life}}</b></div>
+      </div>
+      <div class="ability"><img src="./assets/icons/magic-wand.png">
+        <div class="special-ability"><b>Fireball</b></div>
+      </div>
+      </div>
+    </div>
+
+
