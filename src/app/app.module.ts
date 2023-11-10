@@ -10,6 +10,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { CharacterComponent } from './character/character.component';
 import {HttpClientModule} from "@angular/common/http";
 import {NgOptimizedImage} from "@angular/common";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {NgOptimizedImage} from "@angular/common";
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     NgOptimizedImage
   ],
   providers: [],
