@@ -1,28 +1,33 @@
 <div class="container">
   <div class="row">
-    <div *ngFor="let character of characters let i = index" class="character-card" [style.background]="character.faction === 'good'? 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/hogwarts-gryffindor-pattern-7-black-gryphon.jpg'
-     : 'https://render.fineartamerica.com/images/rendered/default/print/8/8/break/images/artworkimages/medium/3/hogwarts-slytherin-pattern-3-black-gryphon.jpg'"  [style.animation-delay.ms]="i * 200">
-      <div class="character-name">{{character.name}}</div>
-
-
+    <div *ngFor="let character of characters let i = index" class="character-card" [style.animation-delay.ms]="i * 200"
+         [class.selected]="isSelected(i)"
+         [class.good]="character.faction === 'good'"
+         [class.bad]="character.faction === 'bad'"
+         (click)="toggleSelection(i)"
+         [style.background]="getCardBackground(character)"
+         [style.animation-delay.ms]="i * 200">
+      <div class="header"  [style.background]="getCardHeaderBackground(character)">
+        <div class="character-name">{{character.name}}</div>
+      </div>
       <div class="image-section">
         <img [src]="character.image">
       </div>
       <div class="info-section">
-        <div class="ability"><img src="./assets/icons/lightning.png">
+        <div class="ability"><img class="icon" src="./assets/icons/lightning.png">
           <div class="ability-bar" [style.width.%]="character.strength * 10"></div>
           <div class="ability-score"><b> {{character.strength}}</b></div>
         </div>
 
-        <div class="ability" [style.width.%]="character.life"><img src="./assets/icons/heart%20(1).png">
+        <div class="ability" [style.width.%]="character.life"><img class="icon" src="./assets/icons/heart%20(1).png">
           <div class="ability-bar"></div>
           <div class="ability-score"><b>{{character.life}}</b></div>
         </div>
-        <div class="ability"><img src="./assets/icons/magic-wand.png">
+        <div class="ability"><img class="icon" src="./assets/icons/magic-wand.png">
           <div class="special-ability"><b>Fireball</b></div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
+
