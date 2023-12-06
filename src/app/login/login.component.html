@@ -1,3 +1,7 @@
+<ngb-alert *ngIf="!staticAlertClosed" [type]="'danger'" (closed)="staticAlertClosed = true" [dismissible]="false">
+  {{ successMessage }}
+</ngb-alert>
+
 <div class="container">
   <div class="login-box">
     <div class="left-section">
@@ -5,14 +9,23 @@
     </div>
     <div class="right-section">
     <h1>Welcome to the Wizarding World!</h1>
-    <form>
-      <input type="text" id="email" name="email" placeholder="Email" required>
-      <input type="password" id="password" name="password" placeholder="Password" required>
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+      <input type="text" id="email" name="email" placeholder="Email" required  [formControl]="email">
+      <p *ngIf="email.hasError(validatorsErrors.Pattern) && (email.dirty || email.touched)">
+        Formato e-mail non valido
+      </p>
+      <p *ngIf="email.touched && email.value === ''">
+        E-mail obbligatoria
+      </p>
+     <app-password-form
+       (passwordFormEmitter)=passwordEmitted($event)
+       [isLogin]="true">
+     </app-password-form>
       <div class="forgot-password-signup">
         <div class="div-forgot">Forgot Password</div>
         <div class="div-signup">Signup</div>
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" [disabled]="!authForm.valid">Login</button>
     </form>
   </div>
 </div>

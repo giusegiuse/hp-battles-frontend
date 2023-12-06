@@ -2,6 +2,7 @@ import {Component, OnInit, ElementRef, Renderer2, AfterViewInit, QueryList, View
 import {Character} from "../model/character";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
+import {Ability} from "../model/ability";
 
 
 @Component({
@@ -16,11 +17,16 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   characters: Character[] = []
   dataSubscription?: Subscription
   selectedCharacters: number[] = [];
+  public specialAbilities: Ability | undefined ;
 
   constructor(
     private route: ActivatedRoute,
-    private renderer: Renderer2
-  ) { }
+    private renderer: Renderer2,
+  ) {
+    this.specialAbilities = undefined;
+  }
+
+
 
   ngOnInit() {
     this.dataSubscription = this.route.data.subscribe(data => {
@@ -33,8 +39,7 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   }
 
   getCardBackground(character: Character): string {
-    return character.faction === 'good' ? 'url("https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/hogwarts-gryffindor-pattern-7-black-gryphon.jpg")' :
-      'url("https://render.fineartamerica.com/images/rendered/default/print/8/8/break/images/artworkimages/medium/3/hogwarts-slytherin-pattern-3-black-gryphon.jpg")';
+    return character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
   }
 
   getCardHeaderBackground(character: Character): string {

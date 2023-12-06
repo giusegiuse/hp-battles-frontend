@@ -17,6 +17,13 @@ $secondary-border-color: #ae0001;
   justify-content: flex-start;
   padding: 20px;
   width: 95%;
+  margin-bottom: 900px;
+
+}
+
+.single-ability{
+  display: flex;
+  align-items: center;
 }
 
 .isVisited {
@@ -25,8 +32,8 @@ $secondary-border-color: #ae0001;
 }
 
 .character-card {
-  width: 220px;
-  height: 100%;
+  width: 230px;
+  height: 550px;
   border-radius: 10px;
   box-shadow: 1px 1px 5px black;
   display: flex;
@@ -45,8 +52,9 @@ $secondary-border-color: #ae0001;
     &.good {
       box-shadow: 0px 0px 15px 5px $border-color-good;
     }
-
-    box-shadow: 0px 0px 15px 5px $border-color-bad ;
+    &.bad {
+      box-shadow: 0px 0px 15px 5px $border-color-bad;
+    }
   }
 
 
@@ -54,9 +62,16 @@ $secondary-border-color: #ae0001;
   &:hover {
     box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
     top: -4px;
-    border: 1px solid goldenrod;
     background-color: white;
     margin: 15px 19px;
+
+    &.good {
+      border: 1px solid $border-color-good;
+    }
+
+    &.bad{
+      border: 1px solid $border-color-bad;
+    }
   }
 
   .header{
@@ -114,13 +129,10 @@ $secondary-border-color: #ae0001;
     }
   }
 
-
   .icon {
     top: 10px;
     left: 10px;
-    background-color: $border-color-good;
     border-radius: 50%;
-    padding: 5px;
 
     img {
       max-width: 20px;
@@ -134,6 +146,17 @@ $secondary-border-color: #ae0001;
     color:white;
     font-size: 18px;
     -webkit-text-stroke: 0.5px black;
+    text-align: center;
+    margin: 0 10px;
+
+
+    .ability-description {
+      margin: 10px 5px 0 5px;
+      color: red;
+      word-wrap: break-word;
+      max-width: calc(100% - 10px);
+      font-size: 14px;
+    }
 
     h2 {
       text-align: center;
@@ -159,8 +182,14 @@ $secondary-border-color: #ae0001;
 
     .ability{
       display: flex;
+      flex-direction: row;
       align-items: center;
       margin: 5px;
+      justify-content: space-between;
+      position: absolute;
+      bottom: 0;
+      width: 90%;
+
 
       .ability-label {
         flex: 1;
@@ -169,25 +198,94 @@ $secondary-border-color: #ae0001;
       .ability-bar {
         width: 100%;
         height: 8px;
-        margin-left: -3px;
         background-color: #4caf50;
-        border: 5px solid $border-color-good;
+        border: 1px solid #4caf50;
+        border-radius: 10%;
 
       }
 
       .ability-score{
-        background: $border-color-good;
         padding: 5px;
         border-radius: 50%;
-        margin-left: -10px;
       }
 
       .special-ability{
-        background: $border-color-good;
-        margin-left: -5px;
         padding: 0 10px;
+        text-align: center;
       }
+
+      .cost{
+        border: 4px solid $border-color-good;
+        border-radius: 50%;
+        padding: 6px;
+        position: relative;
+        background-color: black;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        align-self: flex-end;
+
+        &::before {
+          content: '';
+          border-radius: 50%;
+          position: absolute;
+          top: -5px;
+          left: -5px;
+          right: -5px;
+          bottom: -5px;
+          border: 3px solid black;
+        }
+      }
+
+
     }
   }
 }
 
+#footer {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  height: 80px;
+  width: 100%;
+  border-top: 3px solid $border-color-good;
+  background: linear-gradient(to bottom, rgb(149, 149, 149) 0%, rgb(13, 13, 13) 46%, rgb(1, 1, 1) 50%, rgb(10, 10, 10) 53%, rgb(78, 78, 78) 76%, rgb(56, 56, 56) 87%, rgb(27, 27, 27) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+  .left{
+    text-align:left;
+    float:left;
+  }
+  .right{
+    float:right;
+    text-align:right;
+  }
+  .centered{
+    text-align:center;
+  }
+
+  .circle {
+    display: grid;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 120px;
+    border: 3px solid $border-color-good;
+    border-radius: 50%;
+    background: linear-gradient(to bottom, rgb(149, 149, 149) 0%, rgb(13, 13, 13) 46%, rgb(1, 1, 1) 50%, rgb(10, 10, 10) 53%, rgb(78, 78, 78) 76%, rgb(56, 56, 56) 87%, rgb(27, 27, 27) 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .money {
+    font-weight: 800;
+    font-size: 50px;
+    width: 100%;
+    background-image:  linear-gradient(to bottom, rgb(241,231,103) 0%,rgb(254,182,69) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
