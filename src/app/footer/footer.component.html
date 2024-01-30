@@ -1,0 +1,10 @@
+<div class="menu" *ngIf="userName">
+  <div class="option">
+    <button class="option-left">STATISTICHE</button>
+    <button class="option-center-right">OPZIONI</button>
+    <button class="option-right" (click)="logout()">LOGOUT</button>
+  </div>
+  </div>
+  <div class="centered">
+    <div class="circle" > <img class="user-photo" [src]="userPhoto"></div>
+  </div>

@@ -1,0 +1,40 @@
+.card-deck{
+  display: grid;
+  grid-template-columns: auto auto ;
+  row-gap: 300px;
+  column-gap: 100px;
+  justify-content: center;
+  height: 100%;
+}
+
+.card{
+  margin-top: 30px;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  background-color: #171717;
+
+
+  img{
+    max-width: 60vh;
+  }
+}
+
+@media(max-width:800px){
+  .card-deck{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card{
+    display: flex;
+  }
+}
+
+
+
+
+
+

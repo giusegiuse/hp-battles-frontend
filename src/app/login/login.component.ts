@@ -1,10 +1,12 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {Subject} from "rxjs";
 import {emailRegex} from "../constants";
-import { ValidatorsErrors } from '../../validators-errors'
+import {ValidatorsErrors} from '../../validators-errors'
 import {Router} from "@angular/router";
+import {DOCUMENT} from "@angular/common";
+import {SocketService} from "../socket/socket.service";
 
 @Component({
   selector: 'app-login',
@@ -23,31 +25,37 @@ export class LoginComponent implements OnInit, OnDestroy {
   validatorsErrors = ValidatorsErrors
 
   constructor(private authenticationService: AuthenticationService,
-              private router: Router
+              private router: Router,
+              private socketService: SocketService,
+              @Inject(DOCUMENT) private readonly document: Document,
   ) {
 
   }
 
   ngOnInit(): void {
+    const captchaElement = this.document.querySelector<HTMLElement>('.grecaptcha-badge')
+    if (captchaElement) captchaElement.style.visibility = 'visible'
   }
 
   ngOnDestroy(): void {
-
+    const captchaElement = this.document.querySelector<HTMLElement>('.grecaptcha-badge')
+    if (captchaElement) captchaElement.style.visibility = 'hidden'
   }
 
 
-  async onSubmit(form: NgForm) {
+  async login() {
     const credentials = this.loginForm.value
-    if (!form.valid) {
+    let id = ''
+    if (!this.loginForm.valid) {
+      this.email.markAsDirty()
+      this.password.markAsDirty()
       return
     }
-    console.log("credentials"+JSON.stringify(credentials))
-    try{
-      await this.authenticationService.login(credentials.email!, credentials.password!)
-
-    }catch(responseException: any){
+    try {
+      id = await this.authenticationService.login(credentials.email!, credentials.password!)
+    } catch (responseException: any) {
       this.staticAlertClosed = false;
-      if(responseException.error.error.statusCode === 404 || responseException.error.error.statusCode === 401){
+      if (responseException.error.error.statusCode === 404 || responseException.error.error.statusCode === 401) {
         this.successMessage = 'Credenziali non valide';
         this.staticAlertClosed = false;
         this._message$.next(this.successMessage);
@@ -55,17 +63,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.staticAlertClosed = true;
         }, 5000);
       }
-      else{
-        await this.router.navigate([''])
-      }
     }
+    if (credentials.email) this.socketService.setId(id);
+    await this.router.navigate([''])
+
   }
 
   passwordEmitted(passwordFormGroup: FormGroup) {
     const passwordValue = passwordFormGroup.value
     this.password.setValue(passwordValue.password)
   }
-
 
 
 }

@@ -24,22 +24,65 @@ ngb-alert.show {
 
 .login-box {
   display: flex;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   margin: 0 20px 0 20px;
   border-radius: 8px;
   text-align: center;
   width: 60%;
-  height: 50%;
+  height: 60vh;
   justify-content: center;
-  background: linear-gradient(to bottom, rgb(169, 3, 41) 0%, rgb(143, 2, 34) 44%, rgb(109, 0, 25) 100%);
+  color: $secondary-color;
+  position: relative;
+  background: linear-gradient(0deg, #000, #272727);
 
+  h1{
+    margin-top: 3vh;
+  }
+
+  &:before, &:after{
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    background: linear-gradient(45deg, #C62828, #FFEB3B, #1976D2, #558B2F);
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: steam 20s linear infinite;
+  }
+
+
+  @keyframes steam {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  &:after {
+    filter: blur(50px);
+  }
+
+  .error-container {
+    height: 20px;
+    overflow: hidden;
+  }
+
+  .error-form {
+    margin: 0;
+    color: red;
+  }
 
   .left-section {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: #d3a625;
     border-radius: 8px 0 0 8px;
 
     img {
@@ -51,6 +94,12 @@ ngb-alert.show {
     flex: 2;
     padding: 20px;
     border-radius: 0 8px 8px 0;
+
+    .link{
+      text-decoration: none;
+      color: $secondary-color;
+    }
+
   }
 
   h1 {
@@ -60,7 +109,6 @@ ngb-alert.show {
   }
 
   form {
-
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
@@ -75,10 +123,8 @@ ngb-alert.show {
       box-sizing: border-box;
       width: 70%;
       padding: 8px;
-      margin-bottom: 20px;
       border: none;
       border-radius: 4px;
-
     }
 
     button {
@@ -96,6 +142,7 @@ ngb-alert.show {
       }
     }
 
+
     div {
       display: flex;
       margin: 0 auto 10px auto;
@@ -107,5 +154,72 @@ ngb-alert.show {
     }
   }
 }
+
+@media (max-width: 1300px) {
+  .login-box {
+    display: flex;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    margin: 0 20px 0 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 70%;
+    height: 90vh;
+    justify-content: center;
+    color: $secondary-color;
+    position: relative;
+    background: linear-gradient(0deg, #000, #272727);
+  }
+}
+
+@media (max-width: 1024px) {
+
+  .left-section img{
+    display: none;
+  }
+
+  .login-box .left-section{
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+
+  .login-box {
+    width: 90%;
+    margin: 0 auto;
+    height: auto;
+    flex-direction: column;
+
+    h1{
+      margin-top: 0;
+    }
+  }
+
+  .login-box .left-section {
+    border-radius: 8px 8px 0 0;
+  }
+
+  .login-box .right-section {
+    border-radius: 0 0 8px 8px;
+    padding: 10px;
+  }
+
+  .login-box h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+
+
+  .login-box form button {
+    margin-bottom: 20px;
+  }
+
+  .left-section img{
+    display: none;
+  }
+
+
+}
+
 
 

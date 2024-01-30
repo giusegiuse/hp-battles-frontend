@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000'
+  apiUrl: 'http://localhost:3000',
+  apiKeys: {
+    googleRecaptchaKey: '6LfJQTIpAAAAAOrKh_2EETrSAQw73vjG2tKRx_5B',
+  },
 };
 
 /*

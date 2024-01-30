@@ -1,0 +1,83 @@
+.registration-box {
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+  margin: 0 20px 0 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 60%;
+  justify-content: center;
+  color: #ffdb00;
+  position: relative;
+  background: linear-gradient(0deg, #000, #272727);
+
+  &:before, &:after{
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    background: linear-gradient(45deg, #C62828, #FFEB3B, #1976D2, #558B2F);
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: steam 20s linear infinite;
+  }
+
+  @keyframes steam {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  &:after {
+    filter: blur(50px);
+  }
+}
+
+.registration-box .card-header {
+  border-radius: 8px 8px 0 0;
+  padding: 10px;
+  color: #ffdb00;
+}
+
+.registration-box .card-body {
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+}
+
+.registration-box label {
+  color: #ffdb00;
+}
+
+.registration-box input[type="username"],
+.registration-box input[type="email"],
+.registration-box input[type="password"] {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 4px;
+}
+
+.registration-box button {
+  font-size: 16px;
+  background-color: #ffdb00;
+  color: #000000;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+}
+
+.registration-box button:hover {
+  background-color: darken(#ffdb00, 10%);
+}

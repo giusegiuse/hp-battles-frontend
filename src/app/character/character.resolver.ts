@@ -1,5 +1,5 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
-import {CharacterServiceService} from "../services/character-service.service";
+import {CharacterService} from "../services/character/character.service";
 import {Injectable} from "@angular/core";
 
 @Injectable({
@@ -9,7 +9,7 @@ import {Injectable} from "@angular/core";
 export class CharacterResolver  {
 
   constructor(
-    private characterService: CharacterServiceService
+    private characterService: CharacterService
   ) {
   }
 

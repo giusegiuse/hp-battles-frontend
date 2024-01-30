@@ -1,8 +1,19 @@
-import {Component, OnInit, ElementRef, Renderer2, AfterViewInit, QueryList, ViewChildren} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  Renderer2,
+  AfterViewInit,
+  QueryList,
+  ViewChildren,
+  ChangeDetectorRef, ViewChild
+} from '@angular/core';
 import {Character} from "../model/character";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {Ability} from "../model/ability";
+import {DeckService} from "../services/deck/deck.service";
+import {AuthenticationService} from "../services/authentication/authentication.service";
 
 
 @Component({
@@ -12,26 +23,32 @@ import {Ability} from "../model/ability";
 })
 
 export class CharacterComponent implements OnInit, AfterViewInit {
+  @ViewChild('money', {read: ElementRef}) valueElement: ElementRef | undefined;
   @ViewChildren('characterCard') characterCards: QueryList<ElementRef> | undefined;
 
   characters: Character[] = []
   dataSubscription?: Subscription
   selectedCharacters: number[] = [];
-  public specialAbilities: Ability | undefined ;
+  money: number = 500;
+  public specialAbilities: Ability | undefined;
 
   constructor(
+    private deckService: DeckService,
+    private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef
   ) {
     this.specialAbilities = undefined;
   }
 
 
-
-  ngOnInit() {
+  async ngOnInit() {
     this.dataSubscription = this.route.data.subscribe(data => {
       this.characters = data['character'].data.data;
     })
+    const userId = this.authenticationService.userId
+    if (userId) await this.deckService.createDeck(userId)
   }
 
   ngAfterViewInit() {
@@ -47,21 +64,33 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   }
 
   startAnimation() {
-    if(this.characterCards)
-    this.characterCards.forEach((element, index) => {
-      setTimeout(() => {
-        this.renderer.addClass(element.nativeElement, 'start-animation');
-        this.renderer.addClass(element.nativeElement, 'flipped');
-      }, 100 * index);
-    });
+    if (this.characterCards)
+      this.characterCards.forEach((element, index) => {
+        setTimeout(() => {
+          this.renderer.addClass(element.nativeElement, 'start-animation');
+          this.renderer.addClass(element.nativeElement, 'flipped');
+        }, 100 * index);
+      });
   }
 
-  toggleSelection(index: number) {
+  async toggleSelection(index: number) {
     const selectedIndex = this.selectedCharacters.indexOf(index);
     if (selectedIndex === -1) {
-      this.selectedCharacters.push(index);
+      try{
+        this.selectedCharacters.push(index);
+        await this.deckService.addCharacter(this.characters[index]._id)
+        const oldMoney = this.money
+        this.money -= this.characters[index].cost;
+        this.animateCounter(this.money, oldMoney);
+      }catch (e){
+        console.log(e)
+      }
     } else {
       this.selectedCharacters.splice(selectedIndex, 1);
+      await this.deckService.removeCharacter(this.characters[index]._id)
+      const oldMoney = this.money
+      this.money += this.characters[index].cost;
+      this.animateCounter(this.money, oldMoney);
     }
   }
 
@@ -69,4 +98,22 @@ export class CharacterComponent implements OnInit, AfterViewInit {
     return this.selectedCharacters.includes(index);
   }
 
+  private animateCounter(newMoney: number, oldMoney: number) {
+    let counts = setInterval(updated);
+    let upto = oldMoney;
+    function updated() {
+      let count = document.getElementsByClassName("money")[0] as HTMLElement;
+      if (count) {
+        if(newMoney > oldMoney)
+          count.innerHTML = (++upto).toString();
+        else if(newMoney < oldMoney)
+          count.innerHTML = (--upto).toString();
+        if (upto === newMoney) {
+          clearInterval(counts);
+        }
+      } else {
+        clearInterval(counts);
+      }
+    }
+  }
 }

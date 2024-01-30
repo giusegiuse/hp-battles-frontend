@@ -14,6 +14,7 @@ import {ValidatorsErrors} from "../../validators-errors";
   styleUrl: './password-form.component.scss'
 })
 export class PasswordFormComponent implements OnInit, OnDestroy{
+
   showPassword: boolean = false
   showConfirmPassword: boolean = false
 
@@ -42,10 +43,15 @@ export class PasswordFormComponent implements OnInit, OnDestroy{
   isRegistration?: boolean
 
   ngOnInit() {
-    console.log("isLOGin "+ this.isLogin)
     if (this.isLogin) {
       this.password.clearValidators()
     }
+
+    this.passwordFormSubscription = this.passwordForm.valueChanges.subscribe(() => {
+      if (this.passwordForm.valid || this.isLogin) {
+        this.passwordFormEmitter.next(this.passwordForm)
+      }
+    })
 }
 
 ngOnDestroy() {

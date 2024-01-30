@@ -1,60 +1,68 @@
 <div class="container">
   <div class="row">
     @for (character of characters; track character.name; let i = $index) {
-    <div  class="character-card" [style.animation-delay.ms]="i * 200"
-         [class.selected]="isSelected(i)"
-         [class.good]="character.faction === 'good'"
-         [class.bad]="character.faction === 'bad'"
-         (click)="toggleSelection(i)"
-         [style.background]="getCardBackground(character)"
-         [style.animation-delay.ms]="i * 200">
-      <div class="header" [style.background]="getCardHeaderBackground(character)">
-        <div class="character-name">{{character.name}}</div>
-      </div>
-      <div class="image-section">
-        <img [src]="character.image">
-      </div>
-      <div class="info-section">
-        <div class="special-ability">
-          <b>{{ character.specialAbilities?.name }}</b>
-          <div class="ability-description">{{character.specialAbilities?.description}}</div>
-<!--          <p>Tipo: {{ character.specialAbilities?.type }}</p>-->
-<!--          <p>Durata: {{ character.specialAbilities?.duration }}</p>-->
+      <div class="character-card" [style.animation-delay.ms]="i * 200"
+           [class.selected]="isSelected(i)"
+           [class.good]="character.faction === 'good'"
+           [class.bad]="character.faction === 'bad'"
+           (click)="toggleSelection(i)"
+           [style.background]="getCardBackground(character)"
+           [style.animation-delay.ms]="i * 200">
+        <div class="header" [style.background]="getCardHeaderBackground(character)">
+          <div class="character-name">{{ character.name }}</div>
         </div>
-
-
-
-        <!--        <div class="ability"><img class="icon" src="./assets/icons/lightning.png">-->
-        <!--          <div class="ability-bar" [style.width.%]="character.strength * 10"></div>-->
-        <!--          <div class="ability-score"><b> {2re{character.strength}}</b></div>-->
-        <!--        </div>-->
-
-        <!--        <div class="ability" [style.width.%]="character.life"><img class="icon" src="./assets/icons/heart%20(1).png">-->
-        <!--          <div class="ability-bar"></div>-->
-        <!--          <div class="ability-score"><b>{{character.life}}</b></div>-->
-        <!--        </div>-->
-
-        <div class="ability">
-          <div class="single-ability">
-            <img class="icon" src="./assets/icons/lightning.png">
-            <b> {{character.strength}}</b>
+        <div class="image-section">
+          <img [src]="character.image">
+        </div>
+        <div class="info-section">
+          <div class="special-ability">
+            <b>{{ character.specialAbilities?.name }}</b>
+            <div class="ability-description">{{ character.specialAbilities?.description }}</div>
+            <!--          <p>Tipo: {{ character.specialAbilities?.type }}</p>-->
+            <!--          <p>Durata: {{ character.specialAbilities?.duration }}</p>-->
           </div>
-          <div class="single-ability">
-            <img class="icon" src="./assets/icons/heart%20(1).png">
-            <div class="ability-score"><b>{{character.life}}</b></div>
+
+
+          <!--        <div class="ability"><img class="icon" src="./assets/icons/lightning.png">-->
+          <!--          <div class="ability-bar" [style.width.%]="character.strength * 10"></div>-->
+          <!--          <div class="ability-score"><b> {2re{character.strength}}</b></div>-->
+          <!--        </div>-->
+
+          <!--        <div class="ability" [style.width.%]="character.life"><img class="icon" src="./assets/icons/heart%20(1).png">-->
+          <!--          <div class="ability-bar"></div>-->
+          <!--          <div class="ability-score"><b>{{character.life}}</b></div>-->
+          <!--        </div>-->
+
+          <div class="ability">
+            <div class="single-ability">
+              <img class="icon" src="./assets/icons/lightning.png">
+              <b> {{ character.strength }}</b>
+            </div>
+            <div class="single-ability">
+              <img class="icon" src="./assets/icons/heart%20(1).png">
+              <div class="ability-score"><b>{{ character.life }}</b></div>
+            </div>
+            <div class="cost"><b>{{ character.cost }}</b></div>
           </div>
-          <div class="cost"><b>{{character.cost}}</b></div>
         </div>
       </div>
-    </div>
     }
   </div>
 </div>
 
 <div id="footer">
-  <div class="left"><div></div></div>
-  <div class="centered">
-    <div class="circle"><span class="money">500</span></div>
+  <div class="left">
+    <div></div>
   </div>
-  <div class="right"><div></div></div>
+  <div class="centered">
+
+    <div class="circle">
+      <div class="money" >
+        {{ money }}
+      </div>
+    </div>
+  </div>
+  <div class="right">
+    <div></div>
+  </div>
 </div>

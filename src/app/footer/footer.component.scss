@@ -1,0 +1,104 @@
+$border-color-good: goldenrod;
+
+.menu{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 90px;
+  width: 100%;
+  color: white;
+  font-size: 20px;
+  border-top: 3px solid $border-color-good;
+  background: linear-gradient(to bottom, rgb(149, 149, 149) 0%, rgb(13, 13, 13) 46%, rgb(1, 1, 1) 50%, rgb(10, 10, 10) 53%, rgb(78, 78, 78) 76%, rgb(56, 56, 56) 87%, rgb(27, 27, 27) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+  .username{
+    float: right;
+    padding: 10px;
+    font-weight: bold;
+    text-transform: uppercase ;
+    color: $border-color-good;
+
+  }
+
+  .user-photo{
+    border-radius: 50%;
+    height: auto;
+  }
+
+  .option{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-rows: auto;
+    grid-template-areas: "left center-left center-right right";
+
+
+    button.option-left,
+    button.option-center-right,
+    button.option-right {
+      background-color: transparent;
+      color: white;
+      transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+
+
+    }
+
+    .option-left{
+      grid-area: center-left;
+      font-size: 25px;
+      font-weight: bolder;
+      line-height: 80px;
+      justify-self: center;
+      margin-right: 370px;
+      cursor: pointer;
+
+      border-radius: 5px;
+      transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+
+      &:hover{
+        color: $border-color-good;
+      }
+    }
+
+    .option-center-right, .option-right{
+      font-size: 25px;
+      font-weight: bolder;
+      line-height: 80px;
+      justify-self: center;
+      cursor: pointer;
+      border-radius: 5px;
+      padding-right: 20px;
+      padding-left: 20px;
+      transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+      &:hover{
+        color: $border-color-good;
+      }
+    }
+  }
+}
+
+.option-center-right{
+  margin-left: 390px;
+  grid-area: center-right;
+}
+
+.option-right{
+  grid-area: right;
+
+}
+
+.circle {
+  display: grid;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 120px;
+  border: 3px solid $border-color-good;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, rgb(149, 149, 149) 0%, rgb(13, 13, 13) 46%, rgb(1, 1, 1) 50%, rgb(10, 10, 10) 53%, rgb(78, 78, 78) 76%, rgb(56, 56, 56) 87%, rgb(27, 27, 27) 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  overflow: hidden;
+  z-index: 1;
+}
