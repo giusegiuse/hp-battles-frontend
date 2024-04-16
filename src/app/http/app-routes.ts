@@ -1,4 +1,5 @@
 export enum AppRoutes {
   Home = '',
-  Character = 'character'
+  Character = 'character',
+  Challenge = 'challenge',
 }

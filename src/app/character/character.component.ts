@@ -6,14 +6,16 @@ import {
   AfterViewInit,
   QueryList,
   ViewChildren,
-  ChangeDetectorRef, ViewChild
+  ViewChild
 } from '@angular/core';
 import {Character} from "../model/character";
-import {Subscription} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {Ability} from "../model/ability";
 import {DeckService} from "../services/deck/deck.service";
 import {AuthenticationService} from "../services/authentication/authentication.service";
+import {AppRoutes} from "../http/app-routes";
+import {RoutingService} from "../http/routing.service";
 
 
 @Component({
@@ -30,14 +32,18 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   dataSubscription?: Subscription
   selectedCharacters: number[] = [];
   money: number = 500;
+  staticAlertClosed = true;
+  successMessage = '';
+  _message$ = new Subject<string>();
   public specialAbilities: Ability | undefined;
 
   constructor(
     private deckService: DeckService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
+    public routingService: RoutingService,
     private renderer: Renderer2,
-    private cdr: ChangeDetectorRef
+
   ) {
     this.specialAbilities = undefined;
   }
@@ -76,13 +82,24 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   async toggleSelection(index: number) {
     const selectedIndex = this.selectedCharacters.indexOf(index);
     if (selectedIndex === -1) {
-      try{
+      try {
+        if (this.money < this.characters[index].cost) {
+          this.animateCard(index)
+          this.successMessage = 'Non hai abbastanza crediti';
+          this.staticAlertClosed = false;
+          this._message$.next(this.successMessage);
+          setTimeout(() => {
+            this.staticAlertClosed = true;
+          }, 5000);
+          return
+        }
+        const addCharacterResponse = await this.deckService.addCharacter(this.characters[index]._id)
+        if (addCharacterResponse.status === 500) return
         this.selectedCharacters.push(index);
-        await this.deckService.addCharacter(this.characters[index]._id)
         const oldMoney = this.money
         this.money -= this.characters[index].cost;
         this.animateCounter(this.money, oldMoney);
-      }catch (e){
+      } catch (e) {
         console.log(e)
       }
     } else {
@@ -101,12 +118,13 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   private animateCounter(newMoney: number, oldMoney: number) {
     let counts = setInterval(updated);
     let upto = oldMoney;
+
     function updated() {
       let count = document.getElementsByClassName("money")[0] as HTMLElement;
       if (count) {
-        if(newMoney > oldMoney)
+        if (newMoney > oldMoney)
           count.innerHTML = (++upto).toString();
-        else if(newMoney < oldMoney)
+        else if (newMoney < oldMoney)
           count.innerHTML = (--upto).toString();
         if (upto === newMoney) {
           clearInterval(counts);
@@ -116,4 +134,18 @@ export class CharacterComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  private animateCard(index: number) {
+    let card = document.getElementsByClassName("character-card")[index] as HTMLElement;
+    if (card) {
+      console.log("card");
+      card.classList.add("shake");
+
+      card.addEventListener('animationend', () => {
+        card.classList.remove("shake");
+      }, { once: true });
+    }
+  }
+
+  protected readonly AppRoutes = AppRoutes;
 }

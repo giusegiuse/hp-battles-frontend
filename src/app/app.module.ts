@@ -21,41 +21,46 @@ import {googleRecaptchaKey} from "./constants";
 import {RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module} from "ng-recaptcha";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {UsersOnlineComponent} from "./users-online/users-online.component";
+import {ChallengeComponent} from "./challenge/challenge.component";
 
 const appRoutes: Routes = [];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    SignupComponent,
-    HomeComponent,
-    CharacterComponent,
-    FooterComponent,
-    ForgotPasswordComponent,
-    UsersOnlineComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    NgOptimizedImage,
-    FormsModule,
-    NgbModule,
-    NgbAlertModule,
-    PasswordFormComponent,
-    RecaptchaV3Module
-  ],
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        SignupComponent,
+        HomeComponent,
+        CharacterComponent,
+        FooterComponent,
+        ForgotPasswordComponent,
+        UsersOnlineComponent,
+        ChallengeComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        NgOptimizedImage,
+        FormsModule,
+        NgbModule,
+        NgbAlertModule,
+        PasswordFormComponent,
+        RecaptchaV3Module
+    ],
 
-  providers: [CookieService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
-    provideRouter(appRoutes, withViewTransitions()),
-    {provide: RECAPTCHA_V3_SITE_KEY, useValue: googleRecaptchaKey}
+    providers: [CookieService,
+        {provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true},
+        provideRouter(appRoutes, withViewTransitions()),
+        {provide: RECAPTCHA_V3_SITE_KEY, useValue: googleRecaptchaKey}
 
-  ],
-  bootstrap: [AppComponent]
+    ],
+    exports: [
+        FooterComponent
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

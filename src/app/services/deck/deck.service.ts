@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {backendUrl} from "../../constants";
 
@@ -10,8 +10,8 @@ export class DeckService {
 
   constructor(public httpClient: HttpClient) { }
 
-  async addCharacter(characterId: string): Promise<number> {
-    return await firstValueFrom((this.httpClient.post<number>(`${backendUrl}/api/deck/addCharacter`, {
+  async addCharacter(characterId: string): Promise<HttpErrorResponse> {
+    return await firstValueFrom((this.httpClient.post<HttpErrorResponse>(`${backendUrl}/api/deck/addCharacter`, {
       id: characterId,
     })))
   }

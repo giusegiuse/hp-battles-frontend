@@ -28,7 +28,8 @@ export class UsersOnlineComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.userId = this.authenticationService.userId
     this.socketService.onUsersChanged().subscribe(async (updateOnlineUsers: string) => {
       const resultsPromises: Promise<any>[] = [];
       for (let id of updateOnlineUsers) {
@@ -50,7 +51,6 @@ export class UsersOnlineComponent implements OnInit {
         console.error('Error fetching user details:', error);
       }
     });
-    this.userId = this.authenticationService.userId
   }
 
   highlightUser(user: User) {
@@ -64,7 +64,7 @@ export class UsersOnlineComponent implements OnInit {
   }
 
   async onePlayerChallenge(botOpponent: string) {
-    await this.challengeService.createOnePlayerChallenge(this.userId!, botOpponent)
+    const challengeId = (await this.challengeService.createOnePlayerChallenge(this.userId!, botOpponent)).challengeId
     await this.router.navigate(['/character']);
   }
 }

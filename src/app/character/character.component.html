@@ -1,4 +1,9 @@
-<div class="container">
+<div class="alert-container">
+  <ngb-alert type="custom" *ngIf="!staticAlertClosed" [type]="'danger'" (closed)="staticAlertClosed = true" [dismissible]="false">
+    {{ successMessage }}
+  </ngb-alert>
+</div>
+
   <div class="row">
     @for (character of characters; track character.name; let i = $index) {
       <div class="character-card" [style.animation-delay.ms]="i * 200"
@@ -48,7 +53,7 @@
       </div>
     }
   </div>
-</div>
+
 
 <div id="footer">
   <div class="left">
@@ -57,12 +62,15 @@
   <div class="centered">
 
     <div class="circle">
-      <div class="money" >
+      <div class="money">
         {{ money }}
       </div>
     </div>
+    <div class="confirm">
+      <button [routerLink]="routingService.challenge">Conferma</button>
+    </div>
   </div>
   <div class="right">
-    <div></div>
+
   </div>
 </div>
