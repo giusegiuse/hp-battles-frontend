@@ -33,7 +33,7 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   selectedCharacters: number[] = [];
   money: number = 500;
   staticAlertClosed = true;
-  successMessage = '';
+  errorMessage = '';
   _message$ = new Subject<string>();
   public specialAbilities: Ability | undefined;
 
@@ -85,9 +85,9 @@ export class CharacterComponent implements OnInit, AfterViewInit {
       try {
         if (this.money < this.characters[index].cost) {
           this.animateCard(index)
-          this.successMessage = 'Non hai abbastanza crediti';
+          this.errorMessage = 'Non hai abbastanza crediti';
           this.staticAlertClosed = false;
-          this._message$.next(this.successMessage);
+          this._message$.next(this.errorMessage);
           setTimeout(() => {
             this.staticAlertClosed = true;
           }, 5000);
@@ -136,7 +136,7 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   }
 
   private animateCard(index: number) {
-    let card = document.getElementsByClassName("character-card")[index] as HTMLElement;
+    const card = document.getElementsByClassName("character-card")[index] as HTMLElement;
     if (card) {
       console.log("card");
       card.classList.add("shake");

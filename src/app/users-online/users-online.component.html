@@ -46,24 +46,26 @@
 
     <main class="leaderboard__profiles">
 
+      @for (user of users; track user.id){
+        <div class="users-list">
+          <article class="leaderboard__profile">
+            <img [src]="user.photo" class="leaderboard__picture">
+            <span class="leaderboard__name">{{ user.name }}</span>
+            <span class="leaderboard__value">{{ user.avgVictories }}</span>
+          </article>
+          <article class="leaderboard__profile">
+            <img [src]="user.photo" class="leaderboard__picture">
+            <span class="leaderboard__name">{{ user.name }}</span>
+            <span class="leaderboard__value">{{ user.avgVictories }}</span>
+          </article>
+          <article (click)="onePlayerChallenge('65a67b30330e7cdae4986f70')" class="leaderboard__profile">
+            <img [src]="pcPlayerPhoto" class="leaderboard__picture" alt="leaderboard picture">
+            <span class="leaderboard__name">Voldemort</span>
+            <span class="leaderboard__value">ND</span>
+          </article>
+        </div>
+      }
 
-      <div *ngFor="let user of users" class="users-list">
-        <article class="leaderboard__profile">
-          <img [src]="user.photo" class="leaderboard__picture">
-          <span class="leaderboard__name">{{ user.name }}</span>
-          <span class="leaderboard__value">{{ user.avgVictories }}</span>
-        </article>
-        <article class="leaderboard__profile">
-          <img [src]="user.photo" class="leaderboard__picture">
-          <span class="leaderboard__name">{{ user.name }}</span>
-          <span class="leaderboard__value">{{ user.avgVictories }}</span>
-        </article>
-        <article (click)="onePlayerChallenge('65a67b30330e7cdae4986f70')" class="leaderboard__profile">
-          <img [src]="pcPlayerPhoto" class="leaderboard__picture">
-          <span class="leaderboard__name">Voldemort</span>
-          <span class="leaderboard__value">ND</span>
-        </article>
-      </div>
     </main>
   </div>
 </div>

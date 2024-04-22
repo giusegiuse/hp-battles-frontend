@@ -34,5 +34,9 @@ export class ChallengeService {
     return await firstValueFrom((this.httpClient.get<string>(`${backendUrl}/api/challenge/check-in-progress-challenge/${userId}`)))
   }
 
+  async deleteAllInProgressChallenges(userId: string): Promise<string>{
+    return await firstValueFrom((this.httpClient.delete<string>(`${backendUrl}/api/challenge/delete-all-in-progress-challenges/${userId}`)))
+  }
+
 
 }

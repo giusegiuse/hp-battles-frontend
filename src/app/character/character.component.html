@@ -1,7 +1,9 @@
 <div class="alert-container">
-  <ngb-alert type="custom" *ngIf="!staticAlertClosed" [type]="'danger'" (closed)="staticAlertClosed = true" [dismissible]="false">
-    {{ successMessage }}
-  </ngb-alert>
+  @if (!staticAlertClosed){
+    <ngb-alert type="custom" [type]="'danger'" (closed)="staticAlertClosed = true" [dismissible]="false">
+      {{ errorMessage }}
+    </ngb-alert>
+  }
 </div>
 
   <div class="row">

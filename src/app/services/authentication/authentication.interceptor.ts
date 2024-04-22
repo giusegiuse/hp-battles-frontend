@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import {AuthenticationService} from "./authentication.service";
 import {Injectable} from "@angular/core";
-import {Observable, switchMap, tap} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {backendUrl} from "../../constants";
 
 @Injectable()

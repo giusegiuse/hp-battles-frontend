@@ -13,7 +13,7 @@ export class CharacterResolver  {
   ) {
   }
 
-  async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
+  async resolve(): Promise<any> {
     return await this.characterService.getCharacters().catch(() => {})
   }
 }

@@ -1,7 +1,8 @@
-<ngb-alert *ngIf="!staticAlertClosed" [type]="'danger'" (closed)="staticAlertClosed = true" [dismissible]="false">
-  {{ successMessage }}
-</ngb-alert>
-
+@if (!staticAlertClosed){
+  <ngb-alert [type]="'danger'" (closed)="staticAlertClosed = true" [dismissible]="false">
+    {{ errorMessage }}
+  </ngb-alert>
+}
 <div class="container">
   <div class="login-box">
     <div class="left-section">
@@ -14,12 +15,16 @@
         <input type="text" id="email" name="email" placeholder="Email" required [formControl]="email">
         <div class="form-container">
           <div class="error-container">
-            <p class="error-form" *ngIf="email.hasError(validatorsErrors.Pattern) && (email.dirty || email.touched)">
-              Formato e-mail non valido
-            </p>
-            <p class="error-form" *ngIf="email.touched && email.value === ''">
-              E-mail obbligatoria
-            </p>
+            @if(email.hasError(validatorsErrors.Pattern) && (email.dirty || email.touched)){
+              <p class="error-form">
+                Formato e-mail non valido
+              </p>
+            }
+            @if(email.touched && email.value === ''){
+              <p class="error-form">
+                E-mail obbligatoria
+              </p>
+            }
           </div>
         </div>
         <app-password-form

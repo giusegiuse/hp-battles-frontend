@@ -1,5 +1,5 @@
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {Subject} from "rxjs";
 import {emailRegex} from "../constants";
@@ -16,7 +16,7 @@ import {SocketService} from "../socket/socket.service";
 export class LoginComponent implements OnInit, OnDestroy {
 
   private _message$ = new Subject<string>();
-  successMessage = '';
+  errorMessage = '';
 
   staticAlertClosed = true;
   email = new FormControl('', [Validators.required, Validators.pattern(emailRegex)])
@@ -56,9 +56,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     } catch (responseException: any) {
       this.staticAlertClosed = false;
       if (responseException.error.error.statusCode === 404 || responseException.error.error.statusCode === 401) {
-        this.successMessage = 'Credenziali non valide';
+        this.errorMessage = 'Credenziali non valide';
         this.staticAlertClosed = false;
-        this._message$.next(this.successMessage);
+        this._message$.next(this.errorMessage);
         setTimeout(() => {
           this.staticAlertClosed = true;
         }, 5000);

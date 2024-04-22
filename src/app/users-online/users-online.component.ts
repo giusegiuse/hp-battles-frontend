@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SocketService} from "../socket/socket.service";
 import {UserService} from "../services/user/user.service";
 import {User} from "../model/user";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {ChallengeService} from "../services/challenge/challenge.service";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 
@@ -28,11 +28,12 @@ export class UsersOnlineComponent implements OnInit {
   ) {
   }
 
+  //TODO use a resolver to avoid use ngOninit async
   async ngOnInit() {
     this.userId = this.authenticationService.userId
     this.socketService.onUsersChanged().subscribe(async (updateOnlineUsers: string) => {
       const resultsPromises: Promise<any>[] = [];
-      for (let id of updateOnlineUsers) {
+      for (const id of updateOnlineUsers) {
         resultsPromises.push(this.userService.getUserInfoById(id));
       }
       try {

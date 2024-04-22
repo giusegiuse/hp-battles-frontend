@@ -25,7 +25,7 @@ export class UserService {
   }
 
   async getUserInfoById(id: string): Promise<User> {
-    let sanitizedId = sanitizeString(id)
+    const sanitizedId = sanitizeString(id)
     return await firstValueFrom(this.httpClient.get<User>(`${backendUrl}/api/users/${sanitizedId}`))
   }
 
