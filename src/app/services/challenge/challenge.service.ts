@@ -26,10 +26,6 @@ export class ChallengeService {
    })))
   }
 
-  async getChallengeCharacters(userId: string): Promise<Character[]> {
-    return await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/challenge/characters/${userId}`)))
-  }
-
   async checkInProgressChallenge(userId: string): Promise<string> {
     return await firstValueFrom((this.httpClient.get<string>(`${backendUrl}/api/challenge/check-in-progress-challenge/${userId}`)))
   }

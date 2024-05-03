@@ -7,7 +7,7 @@ import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-footer',
-  standalone: false,
+  standalone: true,
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })

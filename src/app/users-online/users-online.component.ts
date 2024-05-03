@@ -8,7 +8,7 @@ import {AuthenticationService} from "../services/authentication/authentication.s
 
 @Component({
   selector: 'app-users-online',
-  standalone: false,
+  standalone: true,
   templateUrl: './users-online.component.html',
   styleUrl: './users-online.component.scss'
 })
@@ -66,6 +66,6 @@ export class UsersOnlineComponent implements OnInit {
 
   async onePlayerChallenge(botOpponent: string) {
     const challengeId = (await this.challengeService.createOnePlayerChallenge(this.userId!, botOpponent)).challengeId
-    await this.router.navigate(['/character']);
+    await this.router.navigate(['/character', challengeId]);
   }
 }

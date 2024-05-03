@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-signup',
+  standalone: true,
+  imports: [ReactiveFormsModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })

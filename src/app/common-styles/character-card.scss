@@ -1,0 +1,235 @@
+$character-card-bg: #740001;
+$card-shadow: rgba(0, 0, 0, 0.1);
+$border-color-good: goldenrod;
+$border-color-bad: #00ff00;
+//$border-color:  #eeba30;
+$secondary-border-color: #ae0001;
+
+
+.character-card {
+  width: 250px;
+  height: 550px;
+  border-radius: 10px;
+  padding : 0;
+  box-shadow: 1px 1px 5px black;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 20px 20px;
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: slide-in 0.2s ease-out forwards;
+  transition: opacity 0s ease-in-out, transform 0.1s ease-in-out;
+  position: relative;
+
+  &.selected {
+    transition: box-shadow 0.3s ease;
+
+    &.good {
+      box-shadow: 0px 0px 15px 5px $border-color-good;
+    }
+    &.bad {
+      box-shadow: 0px 0px 15px 5px $border-color-bad;
+    }
+  }
+
+  &:hover {
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    top: -4px;
+    background-color: white;
+    margin: 15px 19px;
+
+    &.good {
+      border: 1px solid $border-color-good;
+    }
+
+    &.bad{
+      border: 1px solid $border-color-bad;
+    }
+  }
+
+  .header{
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    padding: 10px 0;
+
+    .character-name {
+      font-size: 20px;
+      font-weight: bolder;
+      text-transform: capitalize;
+      letter-spacing: 1px;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      display: flex;
+    }
+
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-1000%)  rotateY(0deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) rotateY(360deg);
+    }
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+
+  .shake {
+    color:red;
+    animation: shake 0.5s;
+  }
+
+  .image-section {
+    position: relative;
+    text-align: center;
+    color: white;
+    border-radius: 10px;
+
+    img{
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  .back {
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .back-content {
+      text-align: center;
+      color: #333;
+    }
+  }
+
+  .icon {
+    top: 10px;
+    left: 10px;
+    border-radius: 50%;
+
+    img {
+      max-width: 20px;
+      max-height: 20px;
+      border-radius: 50%;
+    }
+  }
+
+  .info-section {
+    font-weight: bolder;
+    color:white;
+    font-size: 18px;
+    -webkit-text-stroke: 0.5px black;
+    text-align: center;
+    margin: 0 10px;
+
+
+    .ability-description {
+      margin: 10px 5px 0 5px;
+      color: red;
+      word-wrap: break-word;
+      max-width: calc(100% - 10px);
+      font-size: 14px;
+    }
+
+    h2 {
+      text-align: center;
+      margin: -3px 0 0 0;
+      font-size: 16px;
+      border: 4px solid $border-color-good;
+      background-color: #F1CAB9;
+      border-radius: 10px;
+    }
+
+    .stats {
+      display: flex;
+      font-size: 14px;
+      flex-direction: column;
+      border: 4px solid $border-color-good;
+      background-color: #F1CAB9;
+      margin: -3px 3px 3px 3px;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .ability{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 5px;
+      justify-content: space-between;
+      position: absolute;
+      bottom: 0;
+      width: 90%;
+
+
+      .ability-label {
+        flex: 1;
+      }
+
+      .ability-bar {
+        width: 100%;
+        height: 8px;
+        background-color: #4caf50;
+        border: 1px solid #4caf50;
+        border-radius: 10%;
+
+      }
+
+      .ability-score{
+        padding: 5px;
+        border-radius: 50%;
+      }
+
+      .special-ability{
+        padding: 0 10px;
+        text-align: center;
+      }
+
+      .cost{
+        border: 4px solid $border-color-good;
+        border-radius: 50%;
+        padding: 6px;
+        position: relative;
+        background-color: black;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        align-self: flex-end;
+
+        &::before {
+          content: '';
+          border-radius: 50%;
+          position: absolute;
+          top: -5px;
+          left: -5px;
+          right: -5px;
+          bottom: -5px;
+          border: 3px solid black;
+        }
+      }
+
+
+    }
+  }
+}
+
+.single-ability{
+  display: flex;
+  align-items: center;
+}

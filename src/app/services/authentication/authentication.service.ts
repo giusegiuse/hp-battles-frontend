@@ -5,6 +5,8 @@ import {backendUrl} from "../../constants";
 import {CookieService} from 'ngx-cookie-service';
 import { v4 as uuidv4 } from 'uuid'
 import {CaptchaService} from "./captcha.service";
+import * as fromApp from '../../store/app.states'
+import {Store} from "@ngrx/store";
 
 const tokenKey = 'hptoken'
 const cookiesExpirationDays = 365
@@ -22,7 +24,8 @@ export class AuthenticationService {
 
   constructor(private httpClient: HttpClient,
               private readonly cookieService: CookieService,
-              private readonly captchaService: CaptchaService
+              private readonly captchaService: CaptchaService,
+              private store: Store<fromApp.State>
   ) {
     const isLoggedIn = this.isLoggedIn
     this.isLoggedInSubject = new BehaviorSubject<boolean>(isLoggedIn)

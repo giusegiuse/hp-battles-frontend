@@ -1,15 +1,19 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {Subject} from "rxjs";
 import {emailRegex} from "../constants";
 import {ValidatorsErrors} from '../../validators-errors'
-import {Router} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
 import {DOCUMENT} from "@angular/common";
 import {SocketService} from "../socket/socket.service";
+import {PasswordFormComponent} from "../password-form/password-form.component";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [RouterModule, PasswordFormComponent, ReactiveFormsModule, NgbModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -17,7 +21,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private _message$ = new Subject<string>();
   errorMessage = '';
-
   staticAlertClosed = true;
   email = new FormControl('', [Validators.required, Validators.pattern(emailRegex)])
   password = new FormControl('', {validators: [Validators.required], updateOn: 'submit'})

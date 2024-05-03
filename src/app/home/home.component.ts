@@ -4,10 +4,13 @@ import {UsersOnlineComponent} from "../users-online/users-online.component";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {ChallengeService} from "../services/challenge/challenge.service";
 import {NgbdModalConfirmComponent} from '../ngbd-modal-confirm/ngbd-modal-confirm.component';
+import {FooterComponent} from "../footer/footer.component";
 
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [NgbdModalConfirmComponent, FooterComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -35,8 +38,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.userId = this.authenticationService.userId
     if (!this.userId) throw new Error('User not logged in')
     try {
-      await this.challengeService.checkInProgressChallenge(this.userId)
-      this.modalRef = this.modalService.open(UsersOnlineComponent);
+      const result = await this.challengeService.checkInProgressChallenge(this.userId)
+      if(result){
+        this.modalRef = this.modalService.open(UsersOnlineComponent);
+      }
     } catch (e) {
       this.openModal()
     }
@@ -54,6 +59,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     modalRef.result.then(
       async (result) => {
         if(this.userId) await this.challengeService.deleteAllInProgressChallenges(this.userId)
+        this.modalRef = this.modalService.open(UsersOnlineComponent);
       },
       (reason) => {
       }

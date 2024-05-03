@@ -10,16 +10,19 @@ import {
 } from '@angular/core';
 import {Character} from "../model/character";
 import {Subject, Subscription} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterModule} from "@angular/router";
 import {Ability} from "../model/ability";
 import {DeckService} from "../services/deck/deck.service";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {AppRoutes} from "../http/app-routes";
 import {RoutingService} from "../http/routing.service";
+import {NgbAlertModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
   selector: 'app-character',
+  standalone: true,
+  imports: [RouterModule, NgbAlertModule],
   templateUrl: './character.component.html',
   styleUrls: ['./character.component.scss'],
 })
@@ -35,6 +38,7 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   staticAlertClosed = true;
   errorMessage = '';
   _message$ = new Subject<string>();
+  challengeId: string = ''
   public specialAbilities: Ability | undefined;
 
   constructor(
@@ -50,11 +54,12 @@ export class CharacterComponent implements OnInit, AfterViewInit {
 
 
   async ngOnInit() {
+    let challengeId = this.route.snapshot.paramMap.get('challengeId');
     this.dataSubscription = this.route.data.subscribe(data => {
       this.characters = data['character'].data.data;
     })
     const userId = this.authenticationService.userId
-    if (userId) await this.deckService.createDeck(userId)
+    if (userId && challengeId) await this.deckService.createDeck(userId, challengeId)
   }
 
   ngAfterViewInit() {

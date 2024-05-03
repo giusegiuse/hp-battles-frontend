@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {backendUrl} from "../../constants";
+import {Character} from "../../model/character";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,12 @@ import {backendUrl} from "../../constants";
 export class DeckService {
 
   constructor(public httpClient: HttpClient) { }
+
+  async getDeckCharacters(userId: string): Promise<Character[]> {
+    const deck = await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/deck/characters/${userId}`)))
+    console.log("charachers "+ JSON.stringify(deck))
+    return deck
+  }
 
   async addCharacter(characterId: string): Promise<HttpErrorResponse> {
     return await firstValueFrom((this.httpClient.post<HttpErrorResponse>(`${backendUrl}/api/deck/addCharacter`, {
@@ -21,9 +28,10 @@ export class DeckService {
     })))
   }
 
-  async createDeck(userId: string) {
+  async createDeck(userId: string, challengeId: string) {
     return await firstValueFrom((this.httpClient.post<number>(`${backendUrl}/api/deck/create`, {
-      userId
+      userId,
+      challengeId
     })))
   }
 }
