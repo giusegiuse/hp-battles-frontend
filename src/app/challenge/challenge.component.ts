@@ -3,11 +3,12 @@ import {FooterComponent} from "../footer/footer.component";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {Character} from "../model/character";
+import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-challenge',
   standalone: true,
-  imports: [FooterComponent],
+  imports: [FooterComponent, JsonPipe],
   templateUrl: './challenge.component.html',
   styleUrl: './challenge.component.scss'
 })
@@ -22,7 +23,7 @@ export class ChallengeComponent {
 
   ngOnInit() {
     this.dataSubscription = this.route.data.subscribe(data => {
-      this.characters = data['character'].data.data;
+      this.characters = data['character'].data;
     })
 
   }

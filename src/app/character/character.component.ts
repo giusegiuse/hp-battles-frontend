@@ -6,7 +6,7 @@ import {
   AfterViewInit,
   QueryList,
   ViewChildren,
-  ViewChild
+  ViewChild, inject, signal
 } from '@angular/core';
 import {Character} from "../model/character";
 import {Subject, Subscription} from "rxjs";
@@ -15,14 +15,15 @@ import {Ability} from "../model/ability";
 import {DeckService} from "../services/deck/deck.service";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {AppRoutes} from "../http/app-routes";
-import {RoutingService} from "../http/routing.service";
 import {NgbAlertModule} from "@ng-bootstrap/ng-bootstrap";
+import {CharactersStore} from "../store/characters.store";
+import {JsonPipe} from "@angular/common";
 
 
 @Component({
   selector: 'app-character',
   standalone: true,
-  imports: [RouterModule, NgbAlertModule],
+  imports: [RouterModule, NgbAlertModule, JsonPipe],
   templateUrl: './character.component.html',
   styleUrls: ['./character.component.scss'],
 })
@@ -31,35 +32,41 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   @ViewChild('money', {read: ElementRef}) valueElement: ElementRef | undefined;
   @ViewChildren('characterCard') characterCards: QueryList<ElementRef> | undefined;
 
+  charactersStore = inject(CharactersStore)
   characters: Character[] = []
-  dataSubscription?: Subscription
   selectedCharacters: number[] = [];
   money: number = 500;
   staticAlertClosed = true;
-  errorMessage = '';
+  errorMessage = signal('');
   _message$ = new Subject<string>();
-  challengeId: string = ''
   public specialAbilities: Ability | undefined;
 
   constructor(
     private deckService: DeckService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
-    public routingService: RoutingService,
     private renderer: Renderer2,
-
   ) {
     this.specialAbilities = undefined;
   }
 
 
-  async ngOnInit() {
+  ngOnInit() {
     let challengeId = this.route.snapshot.paramMap.get('challengeId');
-    this.dataSubscription = this.route.data.subscribe(data => {
-      this.characters = data['character'].data.data;
-    })
-    const userId = this.authenticationService.userId
-    if (userId && challengeId) await this.deckService.createDeck(userId, challengeId)
+    this.loadCharacters().then(characters => {
+      this.characters = characters;
+      const userId = this.authenticationService.userId;
+      if (userId && challengeId) {
+        this.deckService.createDeck(userId, challengeId).then(() => {
+        });
+      }
+    }).catch(error => {
+      console.error("Error loading characters:", error);
+    });
+  }
+
+  async loadCharacters(): Promise<Character[]> {
+    return await this.charactersStore.loadAll()
   }
 
   ngAfterViewInit() {
@@ -90,9 +97,9 @@ export class CharacterComponent implements OnInit, AfterViewInit {
       try {
         if (this.money < this.characters[index].cost) {
           this.animateCard(index)
-          this.errorMessage = 'Non hai abbastanza crediti';
+          this.errorMessage.set('Non hai abbastanza crediti')
           this.staticAlertClosed = false;
-          this._message$.next(this.errorMessage);
+          this._message$.next(this.errorMessage());
           setTimeout(() => {
             this.staticAlertClosed = true;
           }, 5000);
@@ -143,7 +150,6 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   private animateCard(index: number) {
     const card = document.getElementsByClassName("character-card")[index] as HTMLElement;
     if (card) {
-      console.log("card");
       card.classList.add("shake");
 
       card.addEventListener('animationend', () => {

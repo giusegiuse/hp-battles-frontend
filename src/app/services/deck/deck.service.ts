@@ -12,9 +12,7 @@ export class DeckService {
   constructor(public httpClient: HttpClient) { }
 
   async getDeckCharacters(userId: string): Promise<Character[]> {
-    const deck = await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/deck/characters/${userId}`)))
-    console.log("charachers "+ JSON.stringify(deck))
-    return deck
+    return await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/deck/characters/${userId}`)))
   }
 
   async addCharacter(characterId: string): Promise<HttpErrorResponse> {

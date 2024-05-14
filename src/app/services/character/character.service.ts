@@ -12,7 +12,8 @@ export class CharacterService {
   constructor(public httpClient: HttpClient) { }
 
   async getCharacters(): Promise<Character[]>{
-    return await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/character`)))
+    const characters = await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/character`)))
+    return characters.data.data
   }
 
   async selectCharacter(characterId: string): Promise<number> {

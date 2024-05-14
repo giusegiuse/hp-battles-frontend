@@ -1,5 +1,4 @@
-
-
+@defer{
 @for(character of characters; track character.name; let i = $index){
   <div class="character-card" [style.animation-delay.ms]="i * 200"
        [class.selected]=""
@@ -32,7 +31,11 @@
       </div>
     </div>
   </div>
-})
+}
+}@placeholder(minimum 1000ms){
+<!--  add progress spinner-->
+  <div>Loading..</div>
+}
 
 
 

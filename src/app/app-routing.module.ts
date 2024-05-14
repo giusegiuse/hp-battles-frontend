@@ -4,7 +4,6 @@ import {SignupComponent} from "./signup/signup.component";
 import {LoginComponent} from "./login/login.component";
 import {HomeComponent} from "./home/home.component";
 import {CharacterComponent} from "./character/character.component";
-import {CharacterResolver} from "./character/character.resolver";
 import {AppRoutes} from "./http/app-routes";
 import {AuthenticationGuard} from "./account/authentication.guard";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
@@ -22,7 +21,7 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: 'users-online', component: UsersOnlineComponent, canActivate: [AuthenticationGuard]},
   { path: AppRoutes.Challenge, component: ChallengeComponent, resolve: {character: ChallengeResolver}, canActivate: [AuthenticationGuard]},
-  { path: `${AppRoutes.Character}/:challengeId`, component: CharacterComponent, resolve: {character: CharacterResolver}, canActivate: [AuthenticationGuard]}
+  { path: `${AppRoutes.Character}/:challengeId`, component: CharacterComponent, canActivate: [AuthenticationGuard]}
 ];
 
 @NgModule({
