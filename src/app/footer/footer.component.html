@@ -1,4 +1,4 @@
-@if (userName) {
+@if (userName()) {
   <div class="menu">
     <div class="option">
       <button class="option-left">STATISTICHE</button>
@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="centered">
-    <div class="circle"> <img class="user-photo" [src]="userPhoto"></div>
+    <div class="circle"> <img class="user-photo" [src]="userPhoto()"></div>
   </div>
 }
 

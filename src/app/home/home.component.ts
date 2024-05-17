@@ -5,12 +5,13 @@ import {AuthenticationService} from "../services/authentication/authentication.s
 import {ChallengeService} from "../services/challenge/challenge.service";
 import {NgbdModalConfirmComponent} from '../ngbd-modal-confirm/ngbd-modal-confirm.component';
 import {FooterComponent} from "../footer/footer.component";
+import {NgOptimizedImage} from "@angular/common";
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgbdModalConfirmComponent, FooterComponent],
+  imports: [NgbdModalConfirmComponent, FooterComponent, NgOptimizedImage],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

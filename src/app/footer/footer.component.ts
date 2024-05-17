@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {Subscription} from "rxjs";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {UserService} from "../services/user/user.service";
@@ -15,8 +15,8 @@ export class FooterComponent implements OnInit{
 
   isLoggedInSubscription?: Subscription
   userInfo : User | undefined
-  userName = ''
-  userPhoto = ''
+  userName = signal('')
+  userPhoto = signal(' ')
 
   constructor(
     public readonly authenticationService: AuthenticationService,
@@ -28,8 +28,8 @@ export class FooterComponent implements OnInit{
   public ngOnInit() {
     this.isLoggedInSubscription = this.authenticationService.isLoggedInObservable.subscribe(async isLoggedIn => {
       this.userInfo = isLoggedIn ? await this.userService.getUserInfo() : undefined
-      this.userName = this.userInfo!.name
-      this.userPhoto = this.userInfo!.photo
+      this.userName.set(this.userInfo!.name)
+      this.userPhoto.set(this.userInfo!.photo)
     })
   }
 

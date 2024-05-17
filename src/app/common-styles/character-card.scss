@@ -12,7 +12,7 @@ $secondary-border-color: #ae0001;
   border-radius: 10px;
   padding : 0;
   box-shadow: 1px 1px 5px black;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   overflow: hidden;
   margin: 20px 20px;
@@ -26,15 +26,15 @@ $secondary-border-color: #ae0001;
     transition: box-shadow 0.3s ease;
 
     &.good {
-      box-shadow: 0px 0px 15px 5px $border-color-good;
+      box-shadow: 0 0 15px 5px $border-color-good;
     }
     &.bad {
-      box-shadow: 0px 0px 15px 5px $border-color-bad;
+      box-shadow: 0 0 15px 5px $border-color-bad;
     }
   }
 
   &:hover {
-    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    box-shadow: 0 4px 8px rgba(38, 38, 38, 0.2);
     top: -4px;
     background-color: white;
     margin: 15px 19px;
@@ -55,7 +55,7 @@ $secondary-border-color: #ae0001;
     padding: 10px 0;
 
     .character-name {
-      font-size: 20px;
+      font-size: 1.5vh;
       font-weight: bolder;
       text-transform: capitalize;
       letter-spacing: 1px;
@@ -64,6 +64,8 @@ $secondary-border-color: #ae0001;
       justify-content: center;
       align-self: center;
       display: flex;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
   }

@@ -9,7 +9,7 @@ import {
   ViewChild, inject, signal
 } from '@angular/core';
 import {Character} from "../model/character";
-import {Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
 import {ActivatedRoute, RouterModule} from "@angular/router";
 import {Ability} from "../model/ability";
 import {DeckService} from "../services/deck/deck.service";
@@ -17,13 +17,13 @@ import {AuthenticationService} from "../services/authentication/authentication.s
 import {AppRoutes} from "../http/app-routes";
 import {NgbAlertModule} from "@ng-bootstrap/ng-bootstrap";
 import {CharactersStore} from "../store/characters.store";
-import {JsonPipe} from "@angular/common";
+import {JsonPipe, NgOptimizedImage} from "@angular/common";
 
 
 @Component({
   selector: 'app-character',
   standalone: true,
-  imports: [RouterModule, NgbAlertModule, JsonPipe],
+  imports: [RouterModule, NgbAlertModule, JsonPipe, NgOptimizedImage],
   templateUrl: './character.component.html',
   styleUrls: ['./character.component.scss'],
 })
