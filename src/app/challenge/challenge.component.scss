@@ -1,0 +1,16 @@
+.challenge-board{
+  display: flex;
+  flex-direction: column;
+}
+
+.opponent-cards{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.player-cards{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}

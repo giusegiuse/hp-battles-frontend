@@ -16,6 +16,11 @@ export class DeckService {
     return characters.data
   }
 
+  async getOpponentDeckCharacters(userId: string): Promise<Character[]> {
+    const characters = await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/deck/opponentCharacters/${userId}`)))
+    return characters.data
+  }
+
   async addCharacter(characterId: string): Promise<HttpErrorResponse> {
     return await firstValueFrom((this.httpClient.post<HttpErrorResponse>(`${backendUrl}/api/deck/addCharacter`, {
       id: characterId,

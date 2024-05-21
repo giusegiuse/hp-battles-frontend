@@ -1,0 +1,14 @@
+@defer {
+  @for (character of opponentCharacters; track character.name; let i = $index) {
+    <app-card
+      [character]="character"
+      [characterIndex]="i"
+      [isOpponentCharacter]="true"
+      [isChallenge]="true">
+    </app-card>
+  }
+} @placeholder (minimum 1000ms) {
+  <!--  add progress spinner-->
+  <div>Loading..</div>
+}
+

@@ -1,42 +1,35 @@
-@defer{
-  @for(character of characters; track character.name; let i = $index){
-    <div class="character-card" [style.animation-delay.ms]="i * 200"
-         [class.selected]=""
-         [class.good]="character.faction === 'good'"
-         [class.bad]="character.faction === 'bad'"
-         [style.background]="getCardBackground(character)"
-         [style.height]="getCardHeight()"
-         [style.width]="getCardWidth()"
-         [style.margin]="getCardLeftMargin()"
-         [style.animation-delay.ms]="i * 200">
-      <div class="header" [style.background]="getCardHeaderBackground(character)">
-        <div class="character-name">{{ character.name }}</div>
-      </div>
-      <div class="image-section"
-      [style.height]="getImageHeight()"
-      [style.width]="getImageWidth()">
-        <img [src]="character.image">
-      </div>
-      <div class="info-section">
-        <div class="special-ability">
-          <b>{{ character.specialAbilities?.name }}</b>
-<!--          <div class="ability-description">{{ character.specialAbilities?.description }}</div>-->
-        </div>
-        <div class="ability">
-          <div class="single-ability">
-            <img class="icon" src="./assets/icons/lightning.png">
-            <b> {{ character.strength }}</b>
-          </div>
-          <div class="single-ability">
-            <img class="icon" src="./assets/icons/heart%20(1).png">
-            <div class="ability-score"><b>{{ character.life }}</b></div>
-          </div>
-          <div class="cost"><b>{{ character.cost }}</b></div>
-        </div>
-      </div>
+<div *ngIf="character" class="character-card" [style.animation-delay.ms]="i * 200"
+     [class.selected]=""
+     [class.good]="character.faction === 'good'"
+     [class.bad]="character.faction === 'bad'"
+     [style.background]="getCardBackground(character)"
+     [style.height]="getCardHeight()"
+     [style.width]="getCardWidth()"
+     [style.margin]="getCardLeftMargin()"
+     [style.animation-delay.ms]="i * 200">
+  <div class="header" [style.background]="getCardHeaderBackground(character)">
+    <div class="character-name">{{ character.name }}</div>
+  </div>
+  <div class="image-section">
+    <img [src]="character.image"
+         [style.height]="getImageHeight()"
+         [style.width]="getImageWidth()">
+  </div>
+  <div class="info-section">
+    <div class="special-ability">
+      <b>{{ character.specialAbilities?.name }}</b>
+      <!--          <div class="ability-description">{{ character.specialAbilities?.description }}</div>-->
     </div>
-  }
-}@placeholder(minimum 1000ms){
-  <!--  add progress spinner-->
-  <div>Loading..</div>
-}
+    <div class="ability">
+      <div class="single-ability">
+        <img class="icon" src="./assets/icons/lightning.png">
+        <b> {{ character.strength }}</b>
+      </div>
+      <div class="single-ability">
+        <img class="icon" src="./assets/icons/heart%20(1).png">
+        <div class="ability-score"><b>{{ character.life }}</b></div>
+      </div>
+      <div class="cost"><b>{{ character.cost }}</b></div>
+    </div>
+  </div>
+</div>

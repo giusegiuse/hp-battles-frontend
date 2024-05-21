@@ -1,5 +1,14 @@
-<app-card
-  [characters]="characters"
-  [isChallenge] = true>
-</app-card>
-<app-footer></app-footer>
+<div class="challenge-board">
+  <div class="opponent-cards">
+  <app-opponent-card
+    [opponentCharacters]="opponentCharacters">
+  </app-opponent-card>
+  </div>
+  <div class="player-cards">
+  <app-cards-player
+    [characters]="characters"
+    [isChallenge]=true>
+  </app-cards-player>
+  </div>
+  <app-footer></app-footer>
+</div>
