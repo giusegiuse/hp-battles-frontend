@@ -1,9 +1,7 @@
 /// <reference types="@angular/localize" />
 import { enableProdMode, importProvidersFrom } from '@angular/core';
-
 import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
-import { EffectsModule } from '@ngrx/effects';
 import { NgbModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgOptimizedImage } from '@angular/common';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -16,7 +14,6 @@ import { provideRouter, Routes, withViewTransitions } from '@angular/router';
 import { AuthenticationInterceptor } from './app/services/authentication/authentication.interceptor';
 import { HTTP_INTERCEPTORS, withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
-import { provideStore } from '@ngrx/store';
 
 const appRoutes: Routes = [];
 
@@ -35,7 +32,6 @@ bootstrapApplication(AppComponent, {
     { provide: RECAPTCHA_V3_SITE_KEY, useValue: googleRecaptchaKey },
     provideHttpClient(withInterceptorsFromDi()),
     provideAnimations(),
-    provideStore()
 ]
 })
   .catch(err => console.error(err));
