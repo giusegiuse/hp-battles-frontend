@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators} from "@angular/forms";
 import {passwordMinLength} from "../constants";
@@ -36,19 +36,16 @@ export class PasswordFormComponent implements OnInit, OnDestroy{
   constructor() {
   }
 
-  @Input()
-  isLogin?: boolean
-
-  @Input()
-  isRegistration?: boolean
+  isLogin = input.required<boolean>()
+  isRegistration = input<boolean>()
 
   ngOnInit() {
-    if (this.isLogin) {
+    if (this.isLogin()) {
       this.password.clearValidators()
     }
 
     this.passwordFormSubscription = this.passwordForm.valueChanges.subscribe(() => {
-      if (this.passwordForm.valid || this.isLogin) {
+      if (this.passwordForm.valid || this.isLogin()) {
         this.passwordFormEmitter.next(this.passwordForm)
       }
     })

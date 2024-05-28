@@ -1,4 +1,4 @@
-import {Component, input, Input} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Character} from "../model/character";
 import {CardComponent} from "../card/card.component";
@@ -11,6 +11,5 @@ import {CardComponent} from "../card/card.component";
   styleUrl: './cards-player.component.scss'
 })
 export class CardsPlayerComponent {
-  @Input() characters?: Character[];
-  @Input() opponentCharacters?: Character[];
+  characters = input.required<Character[]>()
 }

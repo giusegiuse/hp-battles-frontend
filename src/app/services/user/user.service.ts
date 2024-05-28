@@ -4,6 +4,7 @@ import {backendUrl} from "../../constants";
 import {HttpClient} from "@angular/common/http";
 import {AuthenticationService} from "../authentication/authentication.service";
 import {User} from "../../model/user";
+import {Opponent} from "../../model/opponent";
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,12 @@ export class UserService {
       return {}
     }
   }
+
+  async getOpponentUserInfo(opponentUserId: string): Promise<Opponent>{
+    const sanitizedId = sanitizeString(opponentUserId)
+    return await firstValueFrom(this.httpClient.get<Opponent>(`${backendUrl}/api/users/${sanitizedId}/opponent`))
+  }
+
 }
 
 function sanitizeString(text: string){

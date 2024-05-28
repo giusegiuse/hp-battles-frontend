@@ -1,5 +1,5 @@
 @defer {
-  @for (character of opponentCharacters; track character.name; let i = $index) {
+  @for (character of opponentCharacters(); track character.name; let i = $index) {
     <app-card
       [character]="character"
       [characterIndex]="i"

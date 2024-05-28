@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {backendUrl} from "../../constants";
-import {Character} from "../../model/character";
 import {ChallengeCreationResponse} from "../../model/interface/challengeCreationResponse";
 
 @Injectable({
@@ -10,9 +9,15 @@ import {ChallengeCreationResponse} from "../../model/interface/challengeCreation
 })
 export class ChallengeService {
 
+  opponentUserId = signal('')
+
   constructor(
     public httpClient: HttpClient
   ) { }
+
+  getOpponentUserId() {
+    return this.opponentUserId()
+  }
 
   async createChallenge(userId: string, opponentUserId: string) {
     return await firstValueFrom((this.httpClient.post<number>(`${backendUrl}/api/challenge/`, {
@@ -21,6 +26,7 @@ export class ChallengeService {
   }
 
   async createOnePlayerChallenge(userId: string, opponentUserId: string): Promise<ChallengeCreationResponse> {
+   this.opponentUserId.set(opponentUserId)
    return await firstValueFrom((this.httpClient.post<ChallengeCreationResponse>(`${backendUrl}/api/challenge/one-player`, {
      playerOne:  userId, playerTwo:  opponentUserId
    })))

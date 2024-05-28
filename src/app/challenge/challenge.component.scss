@@ -1,16 +1,37 @@
-.challenge-board{
+.challenge-board {
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
 
-.opponent-cards{
-  display:flex;
+.opponent-cards {
+  display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-top: 15px;
 }
 
-.player-cards{
-  display:flex;
-  flex-direction: row;
+.player {
+  display: flex;
+  margin: auto 0 15px 0;
   justify-content: center;
+  align-items: flex-end;
+
+  .player-cards {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+  }
+
+  .player-avatar {
+    margin: 15px;
+
+    img{
+      border-radius: 50%;
+      width: 9vh;
+      height: 9vh;
+    }
+  }
 }
+
+
