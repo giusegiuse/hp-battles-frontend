@@ -28,6 +28,9 @@ export class ChallengeComponent {
   userName = signal('')
   userPhoto = signal(' ')
 
+  opponentPhoto = signal('')
+  opponentUserName = signal('')
+
   constructor(
     private authenticationService: AuthenticationService,
     private userService: UserService,
@@ -40,8 +43,13 @@ export class ChallengeComponent {
     }).catch(error => {
       console.error("Error loading characters:", error);
     });
-    this.userService.getOpponentUserInfo(this.challengeService.getOpponentUserId()).then(opponentUserInfo => {
-      this.opponentUserInfo = opponentUserInfo
+    this.challengeService.getOpponentUserId(this.authenticationService.userId!).then(userId => {
+      this.userService.getOpponentUserInfo(userId).then(opponentUserInfo => {
+        //TODO Refactor handle of opponentUserInfo
+        this.opponentUserInfo = opponentUserInfo
+        this.opponentPhoto.set(opponentUserInfo.photo)
+        this.opponentUserName.set(opponentUserInfo.name)
+      })
     })
     //Use this.challengeService.getOpponentUserId()
     this.loadOpponentCharacters(this.authenticationService.userId!).then(characters => {

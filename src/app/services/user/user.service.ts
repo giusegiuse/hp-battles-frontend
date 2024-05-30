@@ -42,9 +42,9 @@ export class UserService {
 
   async getOpponentUserInfo(opponentUserId: string): Promise<Opponent>{
     const sanitizedId = sanitizeString(opponentUserId)
-    return await firstValueFrom(this.httpClient.get<Opponent>(`${backendUrl}/api/users/${sanitizedId}/opponent`))
+    const response = await firstValueFrom(this.httpClient.get<any>(`${backendUrl}/api/users/${sanitizedId}/opponent`))
+    return response.data
   }
-
 }
 
 function sanitizeString(text: string){

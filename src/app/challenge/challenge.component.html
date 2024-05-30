@@ -1,4 +1,7 @@
 <div class="challenge-board">
+  <div class="player-avatar">
+    <img [ngSrc]="opponentPhoto()" loading="lazy">
+  </div>
   <div class="opponent-cards">
     <app-opponent-card
       [opponentCharacters]="opponentCharacters">

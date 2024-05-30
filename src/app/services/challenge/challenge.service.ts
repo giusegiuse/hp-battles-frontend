@@ -15,7 +15,10 @@ export class ChallengeService {
     public httpClient: HttpClient
   ) { }
 
-  getOpponentUserId() {
+  async getOpponentUserId(userId: string) {
+    if(this.opponentUserId() === ''){
+      this.opponentUserId.set(await firstValueFrom(this.httpClient.get<string>(`${backendUrl}/api/challenge/${userId}/opponent-user-id/`)))
+    }
     return this.opponentUserId()
   }
 
