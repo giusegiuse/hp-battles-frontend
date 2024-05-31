@@ -1,18 +1,20 @@
 <div class="challenge-board">
-  <div class="player-avatar">
+  <div class="opponent">
+  <div class="info">
     <img [ngSrc]="opponentPhoto()" loading="lazy">
+    <p class="username">{{opponentUserName()}}</p>
   </div>
   <div class="opponent-cards">
     <app-opponent-card
       [opponentCharacters]="opponentCharacters">
     </app-opponent-card>
   </div>
-  <div class="opponent-avatar">
-    <img src="">
+
   </div>
   <div class="player">
-    <div class="player-avatar">
+    <div class="info">
         <img [ngSrc]="userPhoto()" loading="lazy">
+      <p class="username">{{userName()}}</p>
     </div>
     <div class="player-cards">
       <app-cards-player

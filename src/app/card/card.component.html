@@ -1,5 +1,5 @@
 <div *ngIf="character" class="character-card" [style.animation-delay.ms]="i() * 200"
-     [class.selected]=""
+     [class.selected]="isSelected(i())"
      [class.good]="character().faction === 'good'"
      [class.bad]="character().faction === 'bad'"
      [style.background]="getCardBackground()"

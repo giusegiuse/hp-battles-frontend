@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {Character} from "../../model/character";
 import {backendUrl} from "../../constants";

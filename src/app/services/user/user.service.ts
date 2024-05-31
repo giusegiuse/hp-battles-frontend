@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import {firstValueFrom} from "rxjs";
 import {backendUrl} from "../../constants";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {AuthenticationService} from "../authentication/authentication.service";
 import {User} from "../../model/user";
-import {Opponent} from "../../model/opponent";
 
 @Injectable({
   providedIn: 'root'
@@ -38,12 +37,6 @@ export class UserService {
     } catch (e) {
       return {}
     }
-  }
-
-  async getOpponentUserInfo(opponentUserId: string): Promise<Opponent>{
-    const sanitizedId = sanitizeString(opponentUserId)
-    const response = await firstValueFrom(this.httpClient.get<any>(`${backendUrl}/api/users/${sanitizedId}/opponent`))
-    return response.data
   }
 }
 

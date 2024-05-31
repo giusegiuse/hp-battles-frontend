@@ -1,8 +1,9 @@
 import {Injectable, signal} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {backendUrl} from "../../constants";
 import {ChallengeCreationResponse} from "../../model/interface/challengeCreationResponse";
+import {Opponent} from "../../model/opponent";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import {ChallengeCreationResponse} from "../../model/interface/challengeCreation
 export class ChallengeService {
 
   opponentUserId = signal('')
+  opponentUserInfo = signal(new Opponent(0, '', '', ''))
 
   constructor(
     public httpClient: HttpClient
@@ -20,6 +22,16 @@ export class ChallengeService {
       this.opponentUserId.set(await firstValueFrom(this.httpClient.get<string>(`${backendUrl}/api/challenge/${userId}/opponent-user-id/`)))
     }
     return this.opponentUserId()
+  }
+
+
+  async getOpponentUserInfo(opponentUserId: string): Promise<Opponent>{
+    if(this.opponentUserInfo().id===0){
+      const sanitizedId = sanitizeString(opponentUserId)
+      const response = (await firstValueFrom(this.httpClient.get<any>(`${backendUrl}/api/users/${sanitizedId}/opponent`))).data
+      this.opponentUserInfo.set(response)
+    }
+    return this.opponentUserInfo()
   }
 
   async createChallenge(userId: string, opponentUserId: string) {
@@ -45,3 +57,13 @@ export class ChallengeService {
 
 
 }
+
+function sanitizeString(text: string){
+  let stringWithoutQuotes = decodeURIComponent(text);
+
+  if (stringWithoutQuotes.startsWith('"') && stringWithoutQuotes.endsWith('"')) {
+    stringWithoutQuotes = stringWithoutQuotes.slice(1, -1);
+  }
+  return stringWithoutQuotes
+}
+

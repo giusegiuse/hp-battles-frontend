@@ -15,6 +15,7 @@ export class CardComponent {
   isOpponentCharacter = input<boolean>(false);
   i = input<number>(0, {alias: "characterIndex"});
   character =  input.required<Character>();
+  selectedCharacters: number[] = [];
 
   // getCardBackground(): string {
   //   return this.character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
@@ -51,4 +52,8 @@ export class CardComponent {
   getCardLeftMargin = computed(() => {
     return this.isChallenge() ? '5px 5px' : '20px 20px'
   })
+
+  isSelected(index: number): boolean {
+    return this.selectedCharacters.includes(index);
+  }
 }

@@ -44,7 +44,7 @@ export class ChallengeComponent {
       console.error("Error loading characters:", error);
     });
     this.challengeService.getOpponentUserId(this.authenticationService.userId!).then(userId => {
-      this.userService.getOpponentUserInfo(userId).then(opponentUserInfo => {
+      this.challengeService.getOpponentUserInfo(userId).then(opponentUserInfo => {
         //TODO Refactor handle of opponentUserInfo
         this.opponentUserInfo = opponentUserInfo
         this.opponentPhoto.set(opponentUserInfo.photo)
