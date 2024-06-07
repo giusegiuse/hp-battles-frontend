@@ -12,4 +12,12 @@ import {CardComponent} from "../card/card.component";
 })
 export class CardsPlayerComponent {
   characters = input.required<Character[]>()
+
+
+  constructor() {
+  }
+
+
+
+
 }

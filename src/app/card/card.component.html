@@ -1,37 +1,42 @@
 <div *ngIf="character" class="character-card" [style.animation-delay.ms]="i() * 200"
-     [class.selected]="isSelected(i())"
+     [class.selected]="characterIsSelected()"
      [class.good]="character().faction === 'good'"
      [class.bad]="character().faction === 'bad'"
      [style.background]="getCardBackground()"
      [style.height]="getCardHeight()"
      [style.width]="getCardWidth()"
      [style.margin]="getCardLeftMargin()"
-     [style.animation-delay.ms]="i() * 200">
-  <div class="header" [style.background]="getCardHeaderBackground()">
-    <div class="character-name">{{ character().name }}</div>
-  </div>
-  <div class="image-section">
-    <img [src]="character().image"
-         [style.height]="getImageHeight()"
-         [style.width]="getImageWidth()">
-  </div>
-  <div class="info-section">
-    <div class="special-ability">
+     [style.animation-delay.ms]="i() * 200"
+     (click)="selectCharacter(character()._id)">
+<div class="header" [style.background]="getCardHeaderBackground()">
+  <div class="character-name">{{ character().name }}</div>
+</div>
+<div class="image-section">
+  <img [src]="character().image"
+       [style.height]="getImageHeight()"
+       [style.width]="getImageWidth()">
+</div>
+<div class="info-section">
+  <div class="special-ability">
+
+    <button type="button" class="btn btn-outline-secondary me-2" [ngbTooltip]="character().specialAbility.description" tooltipClass="my-custom-class"
+            placement="top">
       <b>{{ character().specialAbility.name }}</b>
-      <!--          <div class="ability-description">{{ character.specialAbilities?.description }}</div>-->
-    </div>
-    <div class="ability">
-      <div class="single-ability">
-        <img class="icon" src="./assets/icons/lightning.png">
-        <b> {{ character().strength }}</b>
-      </div>
-      <div class="single-ability">
-        <img class="icon" src="./assets/icons/heart%20(1).png">
-        <div class="ability-score"><b>{{ character().life }}</b></div>
-      </div>
-      @if(!isChallenge()){
-        <div class="cost"><b>{{ character().cost }}</b></div>
-      }
-    </div>
+    </button>
+    <!--          <div class="ability-description">{{ character.specialAbilities?.description }}</div>-->
   </div>
+  <div class="ability">
+    <div class="single-ability">
+      <img class="icon" src="./assets/icons/lightning.png">
+      <b> {{ character().strength }}</b>
+    </div>
+    <div class="single-ability">
+      <img class="icon" src="./assets/icons/heart%20(1).png">
+      <div class="ability-score"><b>{{ character().life }}</b></div>
+    </div>
+    @if (!isChallenge()) {
+      <div class="cost"><b>{{ character().cost }}</b></div>
+    }
+  </div>
+</div>
 </div>

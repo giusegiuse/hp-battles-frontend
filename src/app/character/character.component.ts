@@ -2,8 +2,6 @@ import {
   Component,
   OnInit,
   ElementRef,
-  Renderer2,
-  AfterViewInit,
   QueryList,
   ViewChildren,
   ViewChild, inject, signal
@@ -28,7 +26,7 @@ import {JsonPipe, NgOptimizedImage} from "@angular/common";
   styleUrls: ['./character.component.scss'],
 })
 
-export class CharacterComponent implements OnInit, AfterViewInit {
+export class CharacterComponent implements OnInit {
   @ViewChild('money', {read: ElementRef}) valueElement: ElementRef | undefined;
   @ViewChildren('characterCard') characterCards: QueryList<ElementRef> | undefined;
 
@@ -44,8 +42,7 @@ export class CharacterComponent implements OnInit, AfterViewInit {
   constructor(
     private deckService: DeckService,
     private authenticationService: AuthenticationService,
-    private route: ActivatedRoute,
-    private renderer: Renderer2,
+    private route: ActivatedRoute
   ) {
     this.specialAbilities = undefined;
   }
@@ -69,9 +66,6 @@ export class CharacterComponent implements OnInit, AfterViewInit {
     return await this.charactersStore.loadAll()
   }
 
-  ngAfterViewInit() {
-    this.startAnimation();
-  }
 
   getCardBackground(character: Character): string {
     return character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
@@ -81,15 +75,6 @@ export class CharacterComponent implements OnInit, AfterViewInit {
     return character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
   }
 
-  startAnimation() {
-    if (this.characterCards)
-      this.characterCards.forEach((element, index) => {
-        setTimeout(() => {
-          this.renderer.addClass(element.nativeElement, 'start-animation');
-          this.renderer.addClass(element.nativeElement, 'flipped');
-        }, 100 * index);
-      });
-  }
 
   async toggleSelection(index: number) {
     const selectedIndex = this.selectedCharacters.indexOf(index);

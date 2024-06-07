@@ -1,21 +1,27 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, EventEmitter, input, Output, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Character} from "../model/character";
-
+import {CharacterService} from "../services/character/character.service";
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgbTooltipModule],
   templateUrl: './card.component.html',
-  styleUrl: './card.component.scss'
+  styleUrl: './card.component.scss',
+
 })
 export class CardComponent {
   isChallenge = input<boolean>(false);
   isOpponentCharacter = input<boolean>(false);
   i = input<number>(0, {alias: "characterIndex"});
   character =  input.required<Character>();
-  selectedCharacters: number[] = [];
+  isSelected = signal(false)
+
+  constructor(
+    public characterService: CharacterService
+  ){}
 
   // getCardBackground(): string {
   //   return this.character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
@@ -53,7 +59,21 @@ export class CardComponent {
     return this.isChallenge() ? '5px 5px' : '20px 20px'
   })
 
-  isSelected(index: number): boolean {
-    return this.selectedCharacters.includes(index);
+  characterIsSelected(): boolean{
+    return this.isSelected();
+  }
+
+  async selectCharacter(characterId: string){
+    try{
+      let isNotAlreadySelected
+      if(this.isOpponentCharacter()){
+        isNotAlreadySelected = await this.characterService.opponentCharacterIsSelectable(characterId)
+      }
+      else{
+        isNotAlreadySelected = await this.characterService.characterIsSelectable(characterId)
+      }
+      if(isNotAlreadySelected) this.isSelected.set(true)
+      else this.isSelected.set(false)
+    }catch(e){}
   }
 }
