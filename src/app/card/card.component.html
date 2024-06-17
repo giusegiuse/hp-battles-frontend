@@ -19,9 +19,10 @@
 <div class="info-section">
   <div class="special-ability">
 
+    <b>{{ character().specialAbility.name }}</b>
     <button type="button" class="btn btn-outline-secondary me-2" [ngbTooltip]="character().specialAbility.description" tooltipClass="my-custom-class"
             placement="top">
-      <b>{{ character().specialAbility.name }}</b>
+      <img src="./assets/icons/tooltip.svg">
     </button>
     <!--          <div class="ability-description">{{ character.specialAbilities?.description }}</div>-->
   </div>

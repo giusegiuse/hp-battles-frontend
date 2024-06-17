@@ -10,11 +10,12 @@ import {User} from "../model/user";
 import {UserService} from "../services/user/user.service";
 import {Opponent} from "../model/opponent";
 import {ChallengeService} from "../services/challenge/challenge.service";
+import {DiceComponent} from "../dice/dice.component";
 
 @Component({
   selector: 'app-challenge',
   standalone: true,
-  imports: [JsonPipe, CardsPlayerComponent, CardsOpponentComponent, NgOptimizedImage],
+  imports: [JsonPipe, CardsPlayerComponent, CardsOpponentComponent, NgOptimizedImage, DiceComponent],
   templateUrl: './challenge.component.html',
   styleUrl: './challenge.component.scss'
 })
@@ -25,16 +26,16 @@ export class ChallengeComponent {
   isLoggedInSubscription?: Subscription
   userInfo : User | undefined
   opponentUserInfo: Opponent | undefined
+  rollDice: Boolean = false
   userName = signal('')
   userPhoto = signal(' ')
-
   opponentPhoto = signal('')
   opponentUserName = signal('')
 
   constructor(
     private authenticationService: AuthenticationService,
     private userService: UserService,
-    private challengeService: ChallengeService
+    private challengeService: ChallengeService,
   ){}
 
   ngOnInit() {
@@ -70,5 +71,19 @@ export class ChallengeComponent {
 
   async loadOpponentCharacters(userId: string): Promise<Character[]> {
     return await this.charactersStore.loadOpponentCharactersDeck(userId)
+  }
+
+  rollDiceNow(){
+    if(this.rollDice) this.rollDice = false
+    else this.rollDice = true
+
+    console.log(this.rollDice)
+  }
+
+  onDiceRolled(number: number) {
+    console.log(`Il dado ha mostrato: ${number}`);
+    setTimeout(() => {
+      this.rollDice = false;
+    }, 2000);
   }
 }

@@ -9,7 +9,11 @@
       [opponentCharacters]="opponentCharacters">
     </app-opponent-card>
   </div>
-
+  </div>
+  <div class="dice">
+    @if(rollDice){
+      <app-dice (diceRolled)="onDiceRolled($event)"></app-dice>
+    }
   </div>
   <div class="player">
     <div class="info">
@@ -21,5 +25,6 @@
         [characters]="characters">
       </app-cards-player>
     </div>
+    <button (click)="rollDiceNow() ">Lancia Dado</button>
   </div>
 </div>
