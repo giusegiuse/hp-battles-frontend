@@ -1,8 +1,9 @@
-import {getState, patchState, signalStore, withHooks, withMethods, withState} from "@ngrx/signals";
+import {getState, patchState, signalStore, withMethods, withState} from "@ngrx/signals";
 import {Character} from "../model/character";
 import {inject} from "@angular/core";
 import {CharacterService} from "../services/character/character.service";
 import {DeckService} from "../services/deck/deck.service";
+import {DeckType} from "../model/deckType";
 
 
 interface State {
@@ -40,7 +41,15 @@ export const CharactersStore = signalStore(
         const opponentDeckCharacters = await deckService.getOpponentDeckCharacters(userId);
         patchState(store, {opponentDeckCharacters});
         return getState(store).opponentDeckCharacters;
-      }
+      },
+      async getMyCharacterById(characterId: string) {
+        const state = getState(store);
+        return state.myDeckCharacters.find(character => character._id === characterId) || null;
+      },
+      async getOpponentCharacterById(characterId: string) {
+        const state = getState(store);
+        return state.opponentDeckCharacters.find(character => character._id === characterId) || null;
+      },
     }
   }),
 );

@@ -57,6 +57,4 @@ export class CharacterService {
     }
     return true
   }
-
-
 }

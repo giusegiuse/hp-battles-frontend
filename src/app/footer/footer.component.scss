@@ -1,4 +1,4 @@
-$border-color-good: goldenrod;
+$border-color-gryffindor: goldenrod;
 
 .menu{
   position: fixed;
@@ -8,7 +8,7 @@ $border-color-good: goldenrod;
   width: 100%;
   color: white;
   font-size: 20px;
-  border-top: 3px solid $border-color-good;
+  border-top: 3px solid $border-color-gryffindor;
   background: linear-gradient(to bottom, rgb(149, 149, 149) 0%, rgb(13, 13, 13) 46%, rgb(1, 1, 1) 50%, rgb(10, 10, 10) 53%, rgb(78, 78, 78) 76%, rgb(56, 56, 56) 87%, rgb(27, 27, 27) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 
   .username{
@@ -16,7 +16,7 @@ $border-color-good: goldenrod;
     padding: 10px;
     font-weight: bold;
     text-transform: uppercase ;
-    color: $border-color-good;
+    color: $border-color-gryffindor;
 
   }
 
@@ -55,7 +55,7 @@ $border-color-good: goldenrod;
       transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
 
       &:hover{
-        color: $border-color-good;
+        color: $border-color-gryffindor;
       }
     }
 
@@ -70,7 +70,7 @@ $border-color-good: goldenrod;
       padding-left: 20px;
       transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
       &:hover{
-        color: $border-color-good;
+        color: $border-color-gryffindor;
       }
     }
   }
@@ -95,7 +95,7 @@ $border-color-good: goldenrod;
   transform: translateX(-50%);
   width: 120px;
   height: 120px;
-  border: 3px solid $border-color-good;
+  border: 3px solid $border-color-gryffindor;
   border-radius: 50%;
   background: linear-gradient(to bottom, rgb(149, 149, 149) 0%, rgb(13, 13, 13) 46%, rgb(1, 1, 1) 50%, rgb(10, 10, 10) 53%, rgb(78, 78, 78) 76%, rgb(56, 56, 56) 87%, rgb(27, 27, 27) 100%);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);

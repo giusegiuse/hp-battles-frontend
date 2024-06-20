@@ -1,14 +1,16 @@
 <div *ngIf="character" class="character-card" [style.animation-delay.ms]="i() * 200"
      [class.selected]="characterIsSelected()"
-     [class.good]="character().faction === 'good'"
+     [class.gryffindor]="character().faction === 'Gryffindor'"
+     [class.hufflepuff]="character().faction === 'Hufflepuff'"
+     [class.ravenclaw]="character().faction === 'Ravenclaw'"
      [class.bad]="character().faction === 'bad'"
-     [style.background]="getCardBackground()"
+     [style.background]="getCardBackground(character())"
      [style.height]="getCardHeight()"
      [style.width]="getCardWidth()"
      [style.margin]="getCardLeftMargin()"
      [style.animation-delay.ms]="i() * 200"
      (click)="selectCharacter(character()._id)">
-<div class="header" [style.background]="getCardHeaderBackground()">
+<div class="header" [style.background]="getCardHeaderBackground(character())">
   <div class="character-name">{{ character().name }}</div>
 </div>
 <div class="image-section">

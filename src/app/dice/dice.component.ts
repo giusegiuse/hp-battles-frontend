@@ -1,6 +1,7 @@
 import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {NgClass} from "@angular/common";
 import * as THREE from 'three';
+import {AudioService} from "../services/audio/audio.service";
 
 @Component({
   selector: 'app-dice',
@@ -25,10 +26,15 @@ export class DiceComponent implements OnInit {
   private stopRolling: boolean | undefined;
   private animationId: number | undefined;
 
+  constructor(
+    private audioService: AudioService
+  ) { }
+
   ngOnInit(){
     this.initThreeJS();
     this.animate();
     this.rollDice()
+    this.playRollDiceSound();
   }
 
   private initThreeJS(){
@@ -107,4 +113,7 @@ export class DiceComponent implements OnInit {
     }
   }
 
+  playRollDiceSound() {
+    this.audioService.playAudio(`/assets/sounds/dice-rolling.mp3`);
+  }
 }

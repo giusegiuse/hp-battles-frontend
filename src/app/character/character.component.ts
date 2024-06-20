@@ -16,6 +16,7 @@ import {AppRoutes} from "../http/app-routes";
 import {NgbAlertModule} from "@ng-bootstrap/ng-bootstrap";
 import {CharactersStore} from "../store/characters.store";
 import {JsonPipe, NgOptimizedImage} from "@angular/common";
+import {CardService} from "../services/card/card.service";
 
 
 @Component({
@@ -42,7 +43,8 @@ export class CharacterComponent implements OnInit {
   constructor(
     private deckService: DeckService,
     private authenticationService: AuthenticationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cardService: CardService
   ) {
     this.specialAbilities = undefined;
   }
@@ -68,11 +70,11 @@ export class CharacterComponent implements OnInit {
 
 
   getCardBackground(character: Character): string {
-    return character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
+    return this.cardService.getCardBackground(character)
   }
 
   getCardHeaderBackground(character: Character): string {
-    return character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
+    return this.cardService.getCardHeaderBackground(character)
   }
 
 

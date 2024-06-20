@@ -1,9 +1,11 @@
-import {Injectable, signal} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {backendUrl} from "../../constants";
 import {ChallengeCreationResponse} from "../../model/interface/challengeCreationResponse";
 import {Opponent} from "../../model/opponent";
+import {CharactersStore} from "../../store/characters.store";
+import {CharacterService} from "../character/character.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,11 @@ export class ChallengeService {
 
   opponentUserId = signal('')
   opponentUserInfo = signal(new Opponent(0, '', '', ''))
+  charactersStore = inject(CharactersStore)
 
   constructor(
-    public httpClient: HttpClient
+    public httpClient: HttpClient,
+    public characterService: CharacterService
   ) { }
 
   async getOpponentUserId(userId: string) {
@@ -55,6 +59,16 @@ export class ChallengeService {
     return await firstValueFrom((this.httpClient.delete<string>(`${backendUrl}/api/challenge/delete-all-in-progress-challenges/${userId}`)))
   }
 
+  async handleAttack(): Promise<number|undefined> {
+    const myCharacterSelectedId = this.characterService.characterSelected()
+    const opponentCharacterSelectedId = this.characterService.opponentCharacterSelected()
+    const myCharacter = await this.charactersStore.getMyCharacterById(myCharacterSelectedId)
+    const opponentCharacter = await this.charactersStore.getOpponentCharacterById(opponentCharacterSelectedId)
+    if(myCharacter && opponentCharacter){
+      return  opponentCharacter.life - myCharacter.strength
+    }
+    return undefined
+  }
 
 }
 

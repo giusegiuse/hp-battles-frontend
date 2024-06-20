@@ -1,8 +1,11 @@
-import {Component, computed, EventEmitter, input, Output, signal} from '@angular/core';
+import {AfterViewInit, Component, computed, EventEmitter, input, Output, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Character} from "../model/character";
 import {CharacterService} from "../services/character/character.service";
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {CardService} from "../services/card/card.service";
+import {AudioService} from "../services/audio/audio.service";
+import {ChallengeService} from "../services/challenge/challenge.service";
 
 @Component({
   selector: 'app-card',
@@ -12,7 +15,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './card.component.scss',
 
 })
-export class CardComponent {
+export class CardComponent implements AfterViewInit{
   isChallenge = input<boolean>(false);
   isOpponentCharacter = input<boolean>(false);
   i = input<number>(0, {alias: "characterIndex"});
@@ -20,24 +23,24 @@ export class CardComponent {
   isSelected = signal(false)
 
   constructor(
-    public characterService: CharacterService
+    public characterService: CharacterService,
+    private cardService: CardService,
+    private audioService:AudioService,
+    private challengeService: ChallengeService
   ){}
 
-  // getCardBackground(): string {
-  //   return this.character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
-  // }
+  ngAfterViewInit() {
+    //TODO fix this sound to
+    //this.playCharacterSound();
+  }
 
-  getCardBackground = computed(() => {
-    return this.character().faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
-  })
+  getCardBackground(character: Character): string {
+    return this.cardService.getCardBackground(character)
+  }
 
-  // getCardHeaderBackground(character: Character): string {
-  //   return character.faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
-  // }
-
-  getCardHeaderBackground = computed(() => {
-    return this.character().faction === 'good' ? 'linear-gradient(to bottom right, #ffd700, #b8860b)' : 'darkgreen'
-  })
+  getCardHeaderBackground(character: Character): string {
+    return this.cardService.getCardHeaderBackground(character)
+  }
 
   getCardHeight = computed(() => {
     return this.isChallenge() ? '330px' : '550px'
@@ -68,6 +71,8 @@ export class CardComponent {
       let isNotAlreadySelected
       if(this.isOpponentCharacter()){
         isNotAlreadySelected = await this.characterService.opponentCharacterIsSelectable(characterId)
+        const newCharacterLife = await this.challengeService.handleAttack()
+        if(newCharacterLife) this.character().life = newCharacterLife
       }
       else{
         isNotAlreadySelected = await this.characterService.characterIsSelectable(characterId)
@@ -75,5 +80,9 @@ export class CardComponent {
       if(isNotAlreadySelected) this.isSelected.set(true)
       else this.isSelected.set(false)
     }catch(e){}
+  }
+
+  playCharacterSound() {
+    this.audioService.playAudio(`/assets/sounds/card-mixing.mp3`)
   }
 }

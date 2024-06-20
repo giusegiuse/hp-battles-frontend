@@ -1,6 +1,8 @@
 $character-card-bg: #740001;
 $card-shadow: rgba(0, 0, 0, 0.1);
-$border-color-good: goldenrod;
+$border-color-gryffindor: goldenrod;
+$border-color-hufflepuff: red;
+$border-color-ravenclaw: grey;
 $border-color-bad: #00ff00;
 //$border-color:  #eeba30;
 $secondary-border-color: #ae0001;
@@ -25,8 +27,16 @@ $secondary-border-color: #ae0001;
   &.selected {
     transition: box-shadow 0.3s ease;
 
-    &.good {
-      box-shadow: 0 0 15px 5px $border-color-good;
+    &.gryffindor {
+      box-shadow: 0 0 15px 5px $border-color-gryffindor;
+    }
+
+    &.ravenclaw {
+      box-shadow: 0 0 15px 5px $border-color-ravenclaw;
+    }
+
+    &.hufflepuff {
+      box-shadow: 0 0 15px 5px $border-color-hufflepuff;
     }
 
     &.bad {
@@ -40,8 +50,16 @@ $secondary-border-color: #ae0001;
     background-color: white;
     margin: 15px 19px;
 
-    &.good {
-      border: 1px solid $border-color-good;
+    &.gryffindor {
+      border: 1px solid $border-color-gryffindor;
+    }
+
+    &.ravenclaw {
+      border: 1px solid $border-color-ravenclaw;
+    }
+
+    &.hufflepuff {
+      border: 1px solid $border-color-hufflepuff;
     }
 
     &.bad {
@@ -167,7 +185,7 @@ $secondary-border-color: #ae0001;
       text-align: center;
       margin: -3px 0 0 0;
       font-size: 16px;
-      border: 4px solid $border-color-good;
+      border: 4px solid $border-color-gryffindor;
       background-color: #F1CAB9;
       border-radius: 10px;
     }
@@ -176,7 +194,7 @@ $secondary-border-color: #ae0001;
       display: flex;
       font-size: 14px;
       flex-direction: column;
-      border: 4px solid $border-color-good;
+      border: 4px solid $border-color-gryffindor;
       background-color: #F1CAB9;
       margin: -3px 3px 3px 3px;
 
@@ -220,7 +238,7 @@ $secondary-border-color: #ae0001;
       }
 
       .cost {
-        border: 4px solid $border-color-good;
+        border: 4px solid $border-color-gryffindor;
         border-radius: 50%;
         padding: 6px;
         position: relative;

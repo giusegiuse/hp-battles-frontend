@@ -10,7 +10,9 @@
     <!-- use CARD COMPONENT instead -->
     <div class="character-card"
          [class.selected]="isSelected(i)"
-         [class.good]="character.faction === 'good'"
+         [class.gryffindor]="character.faction === 'Gryffindor'"
+         [class.hufflepuff]="character.faction === 'Hufflepuff'"
+         [class.ravenclaw]="character.faction === 'Ravenclaw'"
          [class.bad]="character.faction === 'bad'"
          (click)="toggleSelection(i)"
          [style.background]="getCardBackground(character)"
