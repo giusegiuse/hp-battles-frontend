@@ -9,7 +9,7 @@ export class Character {
     public specialAbility: Ability,
     public image: string,
     public cost: number,
-    public faction: string
+    public faction: string,
   ) {
   }
 }

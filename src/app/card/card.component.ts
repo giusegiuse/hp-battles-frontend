@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, computed, EventEmitter, input, Output, signal} from '@angular/core';
+import {AfterViewInit, Component, computed, EventEmitter, input, Output, Renderer2, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Character} from "../model/character";
 import {CharacterService} from "../services/character/character.service";
@@ -26,8 +26,13 @@ export class CardComponent implements AfterViewInit{
     public characterService: CharacterService,
     private cardService: CardService,
     private audioService:AudioService,
-    private challengeService: ChallengeService
-  ){}
+    private challengeService: ChallengeService,
+    private renderer: Renderer2
+  ){
+    this.characterService.deselectEvent.subscribe(() => {
+      this.isSelected.set(false);
+    });
+  }
 
   ngAfterViewInit() {
     //TODO fix this sound to
@@ -72,7 +77,12 @@ export class CardComponent implements AfterViewInit{
       if(this.isOpponentCharacter()){
         isNotAlreadySelected = await this.characterService.opponentCharacterIsSelectable(characterId)
         const newCharacterLife = await this.challengeService.handleAttack()
-        if(newCharacterLife) this.character().life = newCharacterLife
+        if(newCharacterLife){
+          this.animateLife(newCharacterLife, this.character().life)
+        }
+        setTimeout(() => {
+          this.characterService.deselectAll();
+        }, 1000);
       }
       else{
         isNotAlreadySelected = await this.characterService.characterIsSelectable(characterId)
@@ -80,6 +90,40 @@ export class CardComponent implements AfterViewInit{
       if(isNotAlreadySelected) this.isSelected.set(true)
       else this.isSelected.set(false)
     }catch(e){}
+  }
+
+  private animateLife(newLife: number, oldLife: number) {
+    const intervalTime = 50;
+    const steps = Math.abs(newLife - oldLife);
+    const stepValue = (newLife - oldLife) / steps;
+    let currentLife = oldLife;
+    const index = this.i;
+    const element = document.getElementsByClassName("ability-score")[index()] as HTMLElement;
+
+    const updateLife = () => {
+      if (element) {
+        currentLife += stepValue;
+        this.renderer.setProperty(element, 'innerHTML', Math.round(currentLife).toString());
+
+        if ((stepValue > 0 && currentLife >= newLife) || (stepValue < 0 && currentLife <= newLife)) {
+          clearInterval(animationInterval);
+          this.character().life = newLife;
+        }
+      } else {
+        clearInterval(animationInterval);
+      }
+    };
+    const animationInterval = setInterval(updateLife, intervalTime);
+  }
+
+  getLifeLostPercentage(): string {
+    const totalLife = 80
+    if(this.character().life === totalLife){
+      this.character().life = 0
+      return "100%"
+    }
+    const lifeLost = 100 - (this.character().life / totalLife) * 100;
+    return `${lifeLost}%`;
   }
 
   playCharacterSound() {

@@ -3,7 +3,6 @@ import {Character} from "../model/character";
 import {inject} from "@angular/core";
 import {CharacterService} from "../services/character/character.service";
 import {DeckService} from "../services/deck/deck.service";
-import {DeckType} from "../model/deckType";
 
 
 interface State {

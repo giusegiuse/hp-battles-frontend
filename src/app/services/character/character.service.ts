@@ -1,4 +1,4 @@
-import {Injectable, signal} from '@angular/core';
+import {EventEmitter, Injectable, signal} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {Character} from "../../model/character";
@@ -11,6 +11,8 @@ export class CharacterService {
 
   characterSelected = signal('')
   opponentCharacterSelected = signal('')
+  deselectEvent = new EventEmitter<void>();
+
 
   constructor(public httpClient: HttpClient) { }
 
@@ -26,7 +28,7 @@ export class CharacterService {
   }
 
   async characterIsSelectable(characterId: string): Promise<boolean> {
-    const isSelectable = this.isAnotherCharacterTypeSelected(characterId, this.characterSelected())
+    const isSelectable = this.isAnotherCharacterSameDeckSelected(characterId, this.characterSelected())
     if(isSelectable){
       this.characterSelected.set(characterId)
     }
@@ -37,7 +39,7 @@ export class CharacterService {
   }
 
   async opponentCharacterIsSelectable(characterId: string): Promise<boolean> {
-    const isNobodyOpponentCharacterSelected = this.isAnotherCharacterTypeSelected(characterId, this.opponentCharacterSelected())
+    const isNobodyOpponentCharacterSelected = this.isAnotherCharacterSameDeckSelected(characterId, this.opponentCharacterSelected())
     const isSelectable = isNobodyOpponentCharacterSelected && this.characterSelected()!==''
     if(isSelectable){
       this.opponentCharacterSelected.set(characterId)
@@ -48,7 +50,13 @@ export class CharacterService {
     return isSelectable
   }
 
-  isAnotherCharacterTypeSelected(characterId: string, characterSelected: string): boolean{
+  deselectAll() {
+    this.characterSelected.set('');
+    this.opponentCharacterSelected.set('');
+    this.deselectEvent.emit();
+  }
+
+  isAnotherCharacterSameDeckSelected(characterId: string, characterSelected: string): boolean{
     if(characterSelected && characterSelected !== characterId){
       throw new Error('another character is already selected')
     }

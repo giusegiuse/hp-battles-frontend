@@ -11,7 +11,6 @@ import {UserService} from "../services/user/user.service";
 import {Opponent} from "../model/opponent";
 import {ChallengeService} from "../services/challenge/challenge.service";
 import {DiceComponent} from "../dice/dice.component";
-import {DeckType} from "../model/deckType";
 
 @Component({
   selector: 'app-challenge',

@@ -65,6 +65,11 @@ $secondary-border-color: #ae0001;
     &.bad {
       border: 1px solid $border-color-bad;
     }
+    &.no-life {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
   }
 
   .header {
@@ -128,6 +133,15 @@ $secondary-border-color: #ae0001;
     text-align: center;
     color: white;
     border-radius: 10px;
+
+    .progress-bar-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(255, 0, 0, 0.5);
+      transition: height 0.5s ease;
+    }
 
     img {
       //max-width: 100%;
