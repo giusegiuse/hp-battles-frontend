@@ -36,6 +36,7 @@ export class CharacterComponent implements OnInit {
   selectedCharacters: number[] = [];
   money: number = 500;
   staticAlertClosed = true;
+  userId = signal('')
   errorMessage = signal('');
   _message$ = new Subject<string>();
   public specialAbilities: Ability | undefined;
@@ -54,9 +55,9 @@ export class CharacterComponent implements OnInit {
     let challengeId = this.route.snapshot.paramMap.get('challengeId');
     this.loadCharacters().then(characters => {
       this.characters = characters;
-      const userId = this.authenticationService.userId;
-      if (userId && challengeId) {
-        this.deckService.createDeck(userId, challengeId).then(() => {
+      if(this.authenticationService.userId) this.userId.set(this.authenticationService.userId)
+      if (this.userId && challengeId) {
+        this.deckService.createDeck(this.userId(), challengeId).then(() => {
         });
       }
     }).catch(error => {
@@ -92,7 +93,8 @@ export class CharacterComponent implements OnInit {
           }, 5000);
           return
         }
-        const addCharacterResponse = await this.deckService.addCharacter(this.characters[index]._id)
+
+        const addCharacterResponse = await this.deckService.addCharacter(this.characters[index]._id, this.userId())
         if (addCharacterResponse.status === 500) return
         this.selectedCharacters.push(index);
         const oldMoney = this.money
@@ -115,11 +117,11 @@ export class CharacterComponent implements OnInit {
   }
 
   private animateCounter(newMoney: number, oldMoney: number) {
-    let counts = setInterval(updated);
+    const counts = setInterval(updated);
     let upto = oldMoney;
 
     function updated() {
-      let count = document.getElementsByClassName("money")[0] as HTMLElement;
+      const count = document.getElementsByClassName("money")[0] as HTMLElement;
       if (count) {
         if (newMoney > oldMoney)
           count.innerHTML = (++upto).toString();

@@ -6,6 +6,7 @@ import {ChallengeCreationResponse} from "../../model/interface/challengeCreation
 import {Opponent} from "../../model/opponent";
 import {CharactersStore} from "../../store/characters.store";
 import {CharacterService} from "../character/character.service";
+import {DeckService} from "../deck/deck.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class ChallengeService {
 
   constructor(
     public httpClient: HttpClient,
-    public characterService: CharacterService
+    public characterService: CharacterService,
+    public deckService: DeckService
   ) { }
 
   async getOpponentUserId(userId: string) {
@@ -69,7 +71,6 @@ export class ChallengeService {
     }
     return undefined
   }
-
 }
 
 function sanitizeString(text: string){

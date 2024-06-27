@@ -10,6 +10,8 @@ export class Character {
     public image: string,
     public cost: number,
     public faction: string,
+    public currentLife: number,
+    public turnsBlocked: number
   ) {
   }
 }

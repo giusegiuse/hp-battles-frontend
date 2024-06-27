@@ -32,8 +32,8 @@ export const CharactersStore = signalStore(
         return getState(store).characters;
       },
       async loadCharactersDeck(userId: string) {
-        const myDeckCharacters  = await deckService.getDeckCharacters(userId);
-        patchState(store, {myDeckCharacters });
+        const myDeckCharacters = await deckService.getDeckCharacters(userId);
+        patchState(store, {myDeckCharacters});
         return getState(store).myDeckCharacters;
       },
       async loadOpponentCharactersDeck(userId: string) {
@@ -49,6 +49,16 @@ export const CharactersStore = signalStore(
         const state = getState(store);
         return state.opponentDeckCharacters.find(character => character._id === characterId) || null;
       },
+      updateOpponentCharacterLife(characterId: string, newLife: number) {
+        const state = getState(store);
+        const character = state.opponentDeckCharacters.find(character => character._id === characterId);
+        if (character) {
+          const updatedCharacters = state.opponentDeckCharacters.map(character =>
+            character._id === characterId ? {...character, currentLife: newLife} : character
+          );
+          patchState(store, {opponentDeckCharacters: updatedCharacters});
+        }
+      }
     }
   }),
 );

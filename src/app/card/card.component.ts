@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, computed, EventEmitter, input, Output, Renderer2, signal} from '@angular/core';
+import {AfterViewInit, Component, computed, input, Renderer2, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Character} from "../model/character";
 import {CharacterService} from "../services/character/character.service";
@@ -85,11 +85,16 @@ export class CardComponent implements AfterViewInit{
         }, 1000);
       }
       else{
+        if(this.character().life===0){
+          return
+        }
         isNotAlreadySelected = await this.characterService.characterIsSelectable(characterId)
       }
       if(isNotAlreadySelected) this.isSelected.set(true)
       else this.isSelected.set(false)
-    }catch(e){}
+    }catch(e){
+      console.error("this character is not selectable")
+    }
   }
 
   private animateLife(newLife: number, oldLife: number) {

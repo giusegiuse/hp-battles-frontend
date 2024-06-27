@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {Subscription} from "rxjs";
 import {Character} from "../model/character";
 import {JsonPipe, NgOptimizedImage} from "@angular/common";
@@ -19,14 +19,14 @@ import {DiceComponent} from "../dice/dice.component";
   templateUrl: './challenge.component.html',
   styleUrl: './challenge.component.scss'
 })
-export class ChallengeComponent {
+export class ChallengeComponent implements OnInit {
   characters: Character[] = []
   opponentCharacters: Character[] = []
   charactersStore = inject(CharactersStore)
   isLoggedInSubscription?: Subscription
   userInfo : User | undefined
   opponentUserInfo: Opponent | undefined
-  rollDice: Boolean = false
+  rollDice: boolean = false
   userName = signal('')
   userPhoto = signal(' ')
   opponentPhoto = signal('')

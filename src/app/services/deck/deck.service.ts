@@ -21,9 +21,10 @@ export class DeckService {
     return characters.data
   }
 
-  async addCharacter(characterId: string): Promise<HttpErrorResponse> {
+  async addCharacter(characterId: string, userId: string): Promise<HttpErrorResponse> {
     return await firstValueFrom((this.httpClient.post<HttpErrorResponse>(`${backendUrl}/api/deck/addCharacter`, {
-      id: characterId,
+      characterId: characterId,
+      userId: userId
     })))
   }
 
@@ -37,5 +38,18 @@ export class DeckService {
       userId,
       challengeId
     })))
+  }
+
+  async updateCharacterLifeInBackend(characterId: string, newLife: number): Promise<boolean> {
+    try {
+      await firstValueFrom(this.httpClient.post(`${backendUrl}/api/deck/update-life`, {
+        opponentCharacterId: characterId,
+        newLife: newLife
+      }));
+      return true;
+    } catch (error) {
+      console.error('Failed to update character life in backend:', error);
+      return false;
+    }
   }
 }

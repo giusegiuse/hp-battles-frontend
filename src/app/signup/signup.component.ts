@@ -8,7 +8,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent {
 
   signupForm = new FormGroup({
     'email': new FormControl(null),
@@ -17,9 +17,6 @@ export class SignupComponent implements OnInit {
   });
 
   constructor() {
-  }
-
-  ngOnInit(): void {
   }
 
   onSubmit() {
