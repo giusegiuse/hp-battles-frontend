@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {backendUrl} from "../../constants";
 import {Character} from "../../model/character";
+import {ChallengeService} from "../challenge/challenge.service";
 
 @Injectable({
   providedIn: 'root'
@@ -40,11 +41,17 @@ export class DeckService {
     })))
   }
 
-  async updateCharacterLifeInBackend(characterId: string, newLife: number): Promise<boolean> {
+  async getCurrentLifeCharacters(characterId: string, userId: string): Promise<number> {
+    const data = await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/deck/${userId}/opponent-current-life/character/${characterId}/`)))
+    return data.data
+  }
+
+  async updateCharacterLifeInBackend(characterId: string, newLife: number, opponentUserId: string): Promise<boolean> {
     try {
-      await firstValueFrom(this.httpClient.post(`${backendUrl}/api/deck/update-life`, {
+      await firstValueFrom(this.httpClient.post(`${backendUrl}/api/deck/character/update-life`, {
+        newLife: newLife,
+        opponentUserId: opponentUserId,
         opponentCharacterId: characterId,
-        newLife: newLife
       }));
       return true;
     } catch (error) {

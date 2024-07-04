@@ -1,8 +1,10 @@
-import {EventEmitter, Injectable, signal} from '@angular/core';
+import {EventEmitter, inject, Injectable, signal} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {Character} from "../../model/character";
 import {backendUrl} from "../../constants";
+import {DeckService} from "../deck/deck.service";
+import {AuthenticationService} from "../authentication/authentication.service";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,9 @@ export class CharacterService {
   deselectEvent = new EventEmitter<void>();
 
 
-  constructor(public httpClient: HttpClient) { }
+  constructor(public httpClient: HttpClient,
+              private deckService: DeckService,
+              private authenticationService: AuthenticationService) { }
 
   async getCharacters(): Promise<Character[]>{
     const characters = await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/character`)))
@@ -38,11 +42,15 @@ export class CharacterService {
     return isSelectable
   }
 
-  async opponentCharacterIsSelectable(characterId: string): Promise<boolean> {
-    const isNobodyOpponentCharacterSelected = this.isAnotherCharacterSameDeckSelected(characterId, this.opponentCharacterSelected())
+  async opponentCharacterIsSelectable(opponentCharacter: Character): Promise<boolean> {
+    const userId = this.authenticationService.userId
+    if(!userId) return false
+    const characterCurrentLife = await this.deckService.getCurrentLifeCharacters(opponentCharacter._id, userId)
+    if(characterCurrentLife <= 0) return false
+    const isNobodyOpponentCharacterSelected = this.isAnotherCharacterSameDeckSelected(opponentCharacter._id, this.opponentCharacterSelected())
     const isSelectable = isNobodyOpponentCharacterSelected && this.characterSelected()!==''
     if(isSelectable){
-      this.opponentCharacterSelected.set(characterId)
+      this.opponentCharacterSelected.set(opponentCharacter._id)
     }
     else{
       this.opponentCharacterSelected.set('')

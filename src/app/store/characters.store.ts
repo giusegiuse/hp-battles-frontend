@@ -54,10 +54,18 @@ export const CharactersStore = signalStore(
         const character = state.opponentDeckCharacters.find(character => character._id === characterId);
         if (character) {
           const updatedCharacters = state.opponentDeckCharacters.map(character =>
-            character._id === characterId ? {...character, currentLife: newLife} : character
+            character._id === characterId ? {...character, currentLife: newLife, life: newLife} : character
           );
           patchState(store, {opponentDeckCharacters: updatedCharacters});
         }
+      },
+      getOpponentCharactersUpdatedLife(characterId: string){
+        const state = getState(store);
+        const character = state.opponentDeckCharacters.find(character => character._id === characterId);
+        if (character) {
+          return character.currentLife
+        }
+        return 0
       }
     }
   }),

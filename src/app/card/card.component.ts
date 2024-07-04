@@ -75,7 +75,7 @@ export class CardComponent implements AfterViewInit{
     try{
       let isNotAlreadySelected
       if(this.isOpponentCharacter()){
-        isNotAlreadySelected = await this.characterService.opponentCharacterIsSelectable(characterId)
+        isNotAlreadySelected = await this.characterService.opponentCharacterIsSelectable(this.character())
         const newCharacterLife = await this.challengeService.handleAttack()
         if(newCharacterLife){
           this.animateLife(newCharacterLife, this.character().life)
