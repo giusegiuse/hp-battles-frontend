@@ -8,8 +8,9 @@ import {CardComponent} from "../card/card.component";
   standalone: true,
   imports: [CommonModule, CardComponent],
   templateUrl: './cards-player.component.html',
-  styleUrl: './cards-player.component.scss'
+  styleUrl: './cards-player.component.scss',
 })
+
 export class CardsPlayerComponent {
   characters = input.required<Character[]>()
 

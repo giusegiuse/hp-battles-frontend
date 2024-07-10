@@ -6,6 +6,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {CardService} from "../services/card/card.service";
 import {AudioService} from "../services/audio/audio.service";
 import {ChallengeService} from "../services/challenge/challenge.service";
+import {DeckService} from "../services/deck/deck.service";
 
 @Component({
   selector: 'app-card',
@@ -13,8 +14,8 @@ import {ChallengeService} from "../services/challenge/challenge.service";
   imports: [CommonModule, NgbTooltipModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
-
 })
+
 export class CardComponent implements AfterViewInit{
   isChallenge = input<boolean>(false);
   isOpponentCharacter = input<boolean>(false);
@@ -27,7 +28,7 @@ export class CardComponent implements AfterViewInit{
     private cardService: CardService,
     private audioService:AudioService,
     private challengeService: ChallengeService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ){
     this.characterService.deselectEvent.subscribe(() => {
       this.isSelected.set(false);
@@ -74,10 +75,14 @@ export class CardComponent implements AfterViewInit{
   async selectCharacter(characterId: string){
     try{
       let isNotAlreadySelected
+
       if(this.isOpponentCharacter()){
         isNotAlreadySelected = await this.characterService.opponentCharacterIsSelectable(this.character())
         const newCharacterLife = await this.challengeService.handleAttack()
-        if(newCharacterLife){
+        const areAtLeastOneCharacterInLife = await this.challengeService.areOpponentCharactersAlreadyInLife()
+        console.log("areAtLeastOneCharacterInLife", areAtLeastOneCharacterInLife)
+        if(newCharacterLife === undefined) return
+        if(newCharacterLife>=0){
           this.animateLife(newCharacterLife, this.character().life)
         }
         setTimeout(() => {

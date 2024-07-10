@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {NgClass} from "@angular/common";
 import * as THREE from 'three';
 import {AudioService} from "../services/audio/audio.service";
@@ -10,8 +10,10 @@ import {AudioService} from "../services/audio/audio.service";
     NgClass
   ],
   templateUrl: './dice.component.html',
-  styleUrl: './dice.component.scss'
+  styleUrl: './dice.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class DiceComponent implements OnInit {
   number: number = 1;
   @Output() diceRolled = new EventEmitter<number>();

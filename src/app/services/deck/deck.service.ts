@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {backendUrl} from "../../constants";
 import {Character} from "../../model/character";
-import {ChallengeService} from "../challenge/challenge.service";
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +57,10 @@ export class DeckService {
       console.error('Failed to update character life in backend:', error);
       return false;
     }
+  }
+
+  async checkIfAllCharactersDeckAreDead(opponentUserId: string): Promise<boolean> {
+    const response = await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/deck/${opponentUserId}/check-characters-in-life`)))
+    return response.data
   }
 }

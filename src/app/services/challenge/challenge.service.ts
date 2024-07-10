@@ -68,8 +68,9 @@ export class ChallengeService {
     const myCharacter = await this.charactersStore.getMyCharacterById(myCharacterSelectedId)
     const opponentCharacter = await this.charactersStore.getOpponentCharacterById(opponentCharacterSelectedId)
     if (myCharacter && opponentCharacter) {
-      //TODO use currentLife
-      const newLife = opponentCharacter.life - myCharacter.strength
+      let newLife
+      if(opponentCharacter.life -myCharacter.strength <=0) newLife=0
+      else newLife = opponentCharacter.life - myCharacter.strength
       this.charactersStore.updateOpponentCharacterLife(opponentCharacter._id, newLife);
       const backendUpdateSuccess = await this.deckService.updateCharacterLifeInBackend(opponentCharacter._id, newLife, this.opponentUserId());
       if (backendUpdateSuccess) {
@@ -79,6 +80,10 @@ export class ChallengeService {
       }
     }
     return undefined
+  }
+
+  async areOpponentCharactersAlreadyInLife(): Promise<boolean> {
+    return await this.deckService.checkIfAllCharactersDeckAreDead(this.opponentUserId())
   }
 }
 
