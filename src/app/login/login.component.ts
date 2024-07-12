@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, DestroyRef, Inject, OnInit, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthenticationService} from "../services/authentication/authentication.service";
 import {Subject} from "rxjs";
@@ -17,7 +17,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
 
   private _message$ = new Subject<string>();
   errorMessage = '';
@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   password = new FormControl('', {validators: [Validators.required], updateOn: 'submit'})
   loginForm = new FormGroup({email: this.email, password: this.password})
   validatorsErrors = ValidatorsErrors
+  private destroyRef = inject(DestroyRef)
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router,
@@ -38,13 +39,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const captchaElement = this.document.querySelector<HTMLElement>('.grecaptcha-badge')
     if (captchaElement) captchaElement.style.visibility = 'visible'
+    this.destroyRef.onDestroy(()=> {
+      captchaElement!.style.visibility = 'hidden'
+    })
   }
-
-  ngOnDestroy(): void {
-    const captchaElement = this.document.querySelector<HTMLElement>('.grecaptcha-badge')
-    if (captchaElement) captchaElement.style.visibility = 'hidden'
-  }
-
 
   async login() {
     const credentials = this.loginForm.value

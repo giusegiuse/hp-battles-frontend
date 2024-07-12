@@ -6,7 +6,6 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {CardService} from "../services/card/card.service";
 import {AudioService} from "../services/audio/audio.service";
 import {ChallengeService} from "../services/challenge/challenge.service";
-import {DeckService} from "../services/deck/deck.service";
 
 @Component({
   selector: 'app-card',
@@ -79,8 +78,8 @@ export class CardComponent implements AfterViewInit{
       if(this.isOpponentCharacter()){
         isNotAlreadySelected = await this.characterService.opponentCharacterIsSelectable(this.character())
         const newCharacterLife = await this.challengeService.handleAttack()
-        const areAtLeastOneCharacterInLife = await this.challengeService.areOpponentCharactersAlreadyInLife()
-        console.log("areAtLeastOneCharacterInLife", areAtLeastOneCharacterInLife)
+        const isGameOver = await this.challengeService.checkIfGameOver()
+        if(isGameOver) console.log("hai vinto!") //TODO show text on screen
         if(newCharacterLife === undefined) return
         if(newCharacterLife>=0){
           this.animateLife(newCharacterLife, this.character().life)

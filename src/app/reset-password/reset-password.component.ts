@@ -10,16 +10,13 @@ import { resetPasswordIssueTexts } from './reset-pasword-text-data'
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss'
 })
-export class ResetPasswordComponent implements OnInit, OnDestroy {
+export class ResetPasswordComponent implements OnInit {
 
   resetPasswordIssueTexts = resetPasswordIssueTexts
   resetPasswordTokenStatus = ResetPasswordTokenStatus
 
 
   ngOnInit() {
-  }
-
-  ngOnDestroy() {
   }
 
 }

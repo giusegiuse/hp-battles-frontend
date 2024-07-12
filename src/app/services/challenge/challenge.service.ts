@@ -7,6 +7,7 @@ import {Opponent} from "../../model/opponent";
 import {CharactersStore} from "../../store/characters.store";
 import {CharacterService} from "../character/character.service";
 import {DeckService} from "../deck/deck.service";
+import {AuthenticationService} from "../authentication/authentication.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class ChallengeService {
   constructor(
     public httpClient: HttpClient,
     public characterService: CharacterService,
-    public deckService: DeckService
+    public deckService: DeckService,
+    private authenticationService: AuthenticationService,
   ) {
   }
 
@@ -62,6 +64,10 @@ export class ChallengeService {
     return await firstValueFrom((this.httpClient.delete<string>(`${backendUrl}/api/challenge/delete-all-in-progress-challenges/${userId}`)))
   }
 
+  async setChallengeWinner(userId: string): Promise<string> {
+    return await firstValueFrom((this.httpClient.patch<string>(`${backendUrl}/api/challenge/set-challenge-winner/${userId}`, {})))
+  }
+
   async handleAttack(): Promise<number | undefined> {
     const myCharacterSelectedId = this.characterService.characterSelected()
     const opponentCharacterSelectedId = this.characterService.opponentCharacterSelected()
@@ -69,7 +75,7 @@ export class ChallengeService {
     const opponentCharacter = await this.charactersStore.getOpponentCharacterById(opponentCharacterSelectedId)
     if (myCharacter && opponentCharacter) {
       let newLife
-      if(opponentCharacter.life -myCharacter.strength <=0) newLife=0
+      if(opponentCharacter.life - myCharacter.strength <=0) newLife=0
       else newLife = opponentCharacter.life - myCharacter.strength
       this.charactersStore.updateOpponentCharacterLife(opponentCharacter._id, newLife);
       const backendUpdateSuccess = await this.deckService.updateCharacterLifeInBackend(opponentCharacter._id, newLife, this.opponentUserId());
@@ -82,14 +88,19 @@ export class ChallengeService {
     return undefined
   }
 
-  async areOpponentCharactersAlreadyInLife(): Promise<boolean> {
-    return await this.deckService.checkIfAllCharactersDeckAreDead(this.opponentUserId())
+  async checkIfGameOver(): Promise<boolean> {
+    const thereAreLivingCharacters=  await this.deckService.checkIfThereAreLivingCharacters(this.opponentUserId())
+    if(!thereAreLivingCharacters){
+      const userId = this.authenticationService.userId
+      if(userId) await this.setChallengeWinner(userId)
+      return true
+    }
+    return false
   }
 }
 
 function sanitizeString(text: string){
   let stringWithoutQuotes = decodeURIComponent(text);
-
   if (stringWithoutQuotes.startsWith('"') && stringWithoutQuotes.endsWith('"')) {
     stringWithoutQuotes = stringWithoutQuotes.slice(1, -1);
   }

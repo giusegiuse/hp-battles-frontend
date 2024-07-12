@@ -1,4 +1,4 @@
-import {Component, input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, DestroyRef, inject, input, OnDestroy, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators} from "@angular/forms";
 import {passwordMinLength} from "../constants";
@@ -13,10 +13,11 @@ import {ValidatorsErrors} from "../../validators-errors";
   templateUrl: './password-form.component.html',
   styleUrl: './password-form.component.scss'
 })
-export class PasswordFormComponent implements OnInit, OnDestroy{
+export class PasswordFormComponent implements OnInit{
 
   showPassword: boolean = false
   showConfirmPassword: boolean = false
+  private destroyRef = inject(DestroyRef)
 
   password = new FormControl('', {
     validators: [
@@ -49,11 +50,9 @@ export class PasswordFormComponent implements OnInit, OnDestroy{
         this.passwordFormEmitter.next(this.passwordForm)
       }
     })
-}
-
-ngOnDestroy() {
-  this.passwordFormSubscription?.unsubscribe()
-
+    this.destroyRef.onDestroy(() => {
+      this.passwordFormSubscription?.unsubscribe()
+    })
 }
 
   showPasswordContent(field: string) {

@@ -59,7 +59,7 @@ export class DeckService {
     }
   }
 
-  async checkIfAllCharactersDeckAreDead(opponentUserId: string): Promise<boolean> {
+  async checkIfThereAreLivingCharacters(opponentUserId: string): Promise<boolean> {
     const response = await firstValueFrom((this.httpClient.get<any>(`${backendUrl}/api/deck/${opponentUserId}/check-characters-in-life`)))
     return response.data
   }

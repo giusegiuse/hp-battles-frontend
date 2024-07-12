@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {Subscription} from "rxjs";
 import {Character} from "../model/character";
 import {JsonPipe, NgOptimizedImage} from "@angular/common";
@@ -11,15 +11,19 @@ import {UserService} from "../services/user/user.service";
 import {Opponent} from "../model/opponent";
 import {ChallengeService} from "../services/challenge/challenge.service";
 import {DiceComponent} from "../dice/dice.component";
+import {NgbdModalConfirmComponent} from "../ngbd-modal-confirm/ngbd-modal-confirm.component";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-challenge',
   standalone: true,
-  imports: [JsonPipe, CardsPlayerComponent, CardsOpponentComponent, NgOptimizedImage, DiceComponent],
+  imports: [JsonPipe, CardsPlayerComponent, CardsOpponentComponent, NgOptimizedImage, DiceComponent, NgbdModalConfirmComponent],
   templateUrl: './challenge.component.html',
   styleUrl: './challenge.component.scss'
 })
 export class ChallengeComponent implements OnInit {
+
+  private destroyRef = inject(DestroyRef)
   characters: Character[] = []
   opponentCharacters: Character[] = []
   charactersStore = inject(CharactersStore)
@@ -27,6 +31,10 @@ export class ChallengeComponent implements OnInit {
   userInfo : User | undefined
   opponentUserInfo: Opponent | undefined
   rollDice: boolean = false
+  modalRef: NgbModalRef | undefined
+
+  titleChallengeEnd = signal( '')
+  messageChallengeEnd = signal('')
   userName = signal('')
   userPhoto = signal(' ')
   opponentPhoto = signal('')
@@ -36,6 +44,7 @@ export class ChallengeComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private userService: UserService,
     private challengeService: ChallengeService,
+    public modalService: NgbModal,
   ){}
 
   ngOnInit() {
@@ -83,5 +92,23 @@ export class ChallengeComponent implements OnInit {
     setTimeout(() => {
       this.rollDice = false;
     }, 2000);
+  }
+
+  openModal() {
+    const modalRef = this.modalService.open(NgbdModalConfirmComponent);
+    modalRef.componentInstance.title = this.titleChallengeEnd;
+    modalRef.componentInstance.message = this.messageChallengeEnd;
+
+    modalRef.result.then(
+      async (result) => {
+        //TODO go to homepage
+      },
+      (reason) => {
+      }
+    );
+    this.destroyRef.onDestroy(() => {
+      if(!this.modalRef) return
+      this.modalRef.close()
+    })
   }
 }
