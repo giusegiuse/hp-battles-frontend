@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, computed, input, Renderer2, signal} from '@angular/core';
+import {AfterViewInit, Component, computed, ElementRef, input, Renderer2, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Character} from "../model/character";
 import {CharacterService} from "../services/character/character.service";
@@ -28,6 +28,7 @@ export class CardComponent implements AfterViewInit{
     private audioService:AudioService,
     private challengeService: ChallengeService,
     private renderer: Renderer2,
+    public el: ElementRef
   ){
     this.characterService.deselectEvent.subscribe(() => {
       this.isSelected.set(false);
@@ -74,15 +75,15 @@ export class CardComponent implements AfterViewInit{
   async selectCharacter(characterId: string){
     try{
       let isNotAlreadySelected
-
       if(this.isOpponentCharacter()){
         isNotAlreadySelected = await this.characterService.opponentCharacterIsSelectable(this.character())
         const newCharacterLife = await this.challengeService.handleAttack()
         const isGameOver = await this.challengeService.checkIfGameOver()
-        if(isGameOver) console.log("hai vinto!") //TODO show text on screen
+        if(isGameOver) await this.challengeService.setChallengeEnded()
         if(newCharacterLife === undefined) return
         if(newCharacterLife>=0){
           this.animateLife(newCharacterLife, this.character().life)
+          this.playAttackSound()
         }
         setTimeout(() => {
           this.characterService.deselectAll();
@@ -96,6 +97,7 @@ export class CardComponent implements AfterViewInit{
       }
       if(isNotAlreadySelected) this.isSelected.set(true)
       else this.isSelected.set(false)
+      if(!this.isOpponentCharacter())this.playCharacterSound()
     }catch(e){
       console.error("this character is not selectable")
     }
@@ -136,6 +138,9 @@ export class CardComponent implements AfterViewInit{
   }
 
   playCharacterSound() {
-    this.audioService.playAudio(`/assets/sounds/card-mixing.mp3`)
+    this.audioService.playAudio(`/assets/sounds/card_selection.mp3`)
+  }
+  playAttackSound() {
+    this.audioService.playAudio(`/assets/sounds/Incendio.mp3`)
   }
 }

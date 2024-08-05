@@ -8,5 +8,7 @@ export class Ability {
 }
 
 export enum AbilityType{
-  Potenziante = 'potenziante'
+  Potenziante = 'potenziante',
+  Invulnerabilita = 'invulnerabilità',
+  Danno = 'danno'
 }

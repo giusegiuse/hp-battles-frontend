@@ -18,7 +18,6 @@ import {CharactersStore} from "../store/characters.store";
 import {JsonPipe, NgOptimizedImage} from "@angular/common";
 import {CardService} from "../services/card/card.service";
 
-
 @Component({
   selector: 'app-character',
   standalone: true,

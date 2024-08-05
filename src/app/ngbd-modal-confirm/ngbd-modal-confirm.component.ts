@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, input, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
@@ -10,8 +10,12 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrl: './ngbd-modal-confirm.component.scss'
 })
 export class NgbdModalConfirmComponent {
-  @Input() title: string | undefined;
-  @Input() message: string | undefined;
+  //@Input() title: string | undefined;
+  //@Input() message: string | undefined;
+
+  title = input.required<string>()
+  message = input.required<string>()
+  rejectButtonEnabled = false
 
   constructor(public modal: NgbActiveModal) {
   }

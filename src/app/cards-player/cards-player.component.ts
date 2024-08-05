@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, input, QueryList, ViewChildren} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Character} from "../model/character";
 import {CardComponent} from "../card/card.component";
@@ -12,12 +12,16 @@ import {CardComponent} from "../card/card.component";
 })
 
 export class CardsPlayerComponent {
+  @ViewChildren(CardComponent) playerCards!: QueryList<CardComponent>;
+
   characters = input.required<Character[]>()
 
+  constructor() {}
 
-  constructor() {
+  getCardPosition(cardIndex: number): DOMRect | null {
+    const card = this.playerCards.toArray()[cardIndex];
+    return card ? card.el.nativeElement.getBoundingClientRect() : null;
   }
-
 
 
 

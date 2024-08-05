@@ -1,6 +1,6 @@
 import {inject, Injectable, signal} from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import {firstValueFrom} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject, firstValueFrom, Observable, Subject} from "rxjs";
 import {backendUrl} from "../../constants";
 import {ChallengeCreationResponse} from "../../model/interface/challengeCreationResponse";
 import {Opponent} from "../../model/opponent";
@@ -8,6 +8,8 @@ import {CharactersStore} from "../../store/characters.store";
 import {CharacterService} from "../character/character.service";
 import {DeckService} from "../deck/deck.service";
 import {AuthenticationService} from "../authentication/authentication.service";
+import {Character} from "../../model/character";
+import {Ability, AbilityType} from "../../model/ability";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,11 @@ export class ChallengeService {
   opponentUserId = signal('')
   opponentUserInfo = signal(new Opponent(0, '', '', ''))
   charactersStore = inject(CharactersStore)
+  playerCharacters = signal<Character[]>([]);
+  opponentCharacters = signal<Character[]>([]);
+  private challengeEndedSubject = new BehaviorSubject<boolean>(false)
+  private animateAttackLightingSubject = new Subject<{ playerCardIndex: number, opponentCardIndex: number }>()
+
 
   constructor(
     public httpClient: HttpClient,
@@ -24,6 +31,14 @@ export class ChallengeService {
     public deckService: DeckService,
     private authenticationService: AuthenticationService,
   ) {
+  }
+
+  get challengeEndedObservable(): Observable<boolean> {
+    return this.challengeEndedSubject
+  }
+
+  get animateAttackLightingObservable(): Observable<{ playerCardIndex: number, opponentCardIndex: number }> {
+    return this.animateAttackLightingSubject
   }
 
   async getOpponentUserId(userId: string) {
@@ -75,11 +90,14 @@ export class ChallengeService {
     const opponentCharacter = await this.charactersStore.getOpponentCharacterById(opponentCharacterSelectedId)
     if (myCharacter && opponentCharacter) {
       let newLife
-      if(opponentCharacter.life - myCharacter.strength <=0) newLife=0
+      if (opponentCharacter.life - myCharacter.strength <= 0) newLife = 0
       else newLife = opponentCharacter.life - myCharacter.strength
       this.charactersStore.updateOpponentCharacterLife(opponentCharacter._id, newLife);
       const backendUpdateSuccess = await this.deckService.updateCharacterLifeInBackend(opponentCharacter._id, newLife, this.opponentUserId());
       if (backendUpdateSuccess) {
+        const playerCardIndex = this.playerCharacters().findIndex((value, index) => value._id === myCharacter._id)
+        const opponentCardIndex = this.opponentCharacters().findIndex((value, index) => value._id === opponentCharacter._id)
+        this.animateAttackLightingSubject.next({playerCardIndex: playerCardIndex, opponentCardIndex: opponentCardIndex})
         return newLife;
       } else {
         this.charactersStore.updateOpponentCharacterLife(opponentCharacter._id, opponentCharacter.currentLife);
@@ -89,17 +107,31 @@ export class ChallengeService {
   }
 
   async checkIfGameOver(): Promise<boolean> {
-    const thereAreLivingCharacters=  await this.deckService.checkIfThereAreLivingCharacters(this.opponentUserId())
-    if(!thereAreLivingCharacters){
+    const thereAreLivingCharacters = await this.deckService.checkIfThereAreLivingCharacters(this.opponentUserId())
+    if (!thereAreLivingCharacters) {
       const userId = this.authenticationService.userId
-      if(userId) await this.setChallengeWinner(userId)
+      if (userId) await this.setChallengeWinner(userId)
       return true
     }
     return false
   }
+
+  async setChallengeEnded(): Promise<void> {
+    this.challengeEndedSubject.next(true)
+  }
+
+  async loadCharacters(userId: string): Promise<Character[]> {
+    this.playerCharacters.set(await this.charactersStore.loadCharactersDeck(userId))
+    return this.playerCharacters()
+  }
+
+  async loadOpponentCharacters(userId: string): Promise<Character[]> {
+    this.opponentCharacters.set(await this.charactersStore.loadOpponentCharactersDeck(userId))
+    return this.opponentCharacters()
+  }
 }
 
-function sanitizeString(text: string){
+function sanitizeString(text: string) {
   let stringWithoutQuotes = decodeURIComponent(text);
   if (stringWithoutQuotes.startsWith('"') && stringWithoutQuotes.endsWith('"')) {
     stringWithoutQuotes = stringWithoutQuotes.slice(1, -1);

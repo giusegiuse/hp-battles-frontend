@@ -1,4 +1,7 @@
 <div class="challenge-board">
+  @if(challengeEnded){
+    <app-line-animation></app-line-animation>
+  }
   <div class="opponent">
   <div class="info">
     <img [ngSrc]="opponentPhoto()" loading="lazy">
@@ -28,3 +31,4 @@
     <button (click)="rollDiceNow() ">Lancia Dado</button>
   </div>
 </div>
+<canvas #lightningCanvas class="lightning-canvas" width="800" height="600"></canvas>

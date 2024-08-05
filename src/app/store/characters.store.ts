@@ -49,6 +49,14 @@ export const CharactersStore = signalStore(
         const state = getState(store);
         return state.opponentDeckCharacters.find(character => character._id === characterId) || null;
       },
+      async getMyDeckCharacters() {
+        const state = getState(store);
+        return state.myDeckCharacters;
+      },
+      async getOpponentDeckCharacters() {
+        const state = getState(store);
+        return state.opponentDeckCharacters;
+      },
       updateOpponentCharacterLife(characterId: string, newLife: number) {
         const state = getState(store);
         const character = state.opponentDeckCharacters.find(character => character._id === characterId);
