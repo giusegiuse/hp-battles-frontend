@@ -67,6 +67,13 @@ export const CharactersStore = signalStore(
           patchState(store, {opponentDeckCharacters: updatedCharacters});
         }
       },
+      blockCharacter(characterId: string, turnsBlocked: number){
+        const state = getState(store);
+        const character = state.opponentDeckCharacters.find(character => character._id === characterId);
+        if (character) {
+
+        }
+      },
       getOpponentCharactersUpdatedLife(characterId: string){
         const state = getState(store);
         const character = state.opponentDeckCharacters.find(character => character._id === characterId);

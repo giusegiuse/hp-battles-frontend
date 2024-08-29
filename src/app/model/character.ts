@@ -14,4 +14,5 @@ export class Character {
     public turnsBlocked: number
   ) {
   }
+
 }

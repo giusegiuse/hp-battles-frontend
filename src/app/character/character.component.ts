@@ -2,12 +2,10 @@ import {
   Component,
   OnInit,
   ElementRef,
-  QueryList,
-  ViewChildren,
-  ViewChild, inject, signal
+ inject, signal, viewChild, viewChildren
 } from '@angular/core';
 import {Character} from "../model/character";
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {ActivatedRoute, RouterModule} from "@angular/router";
 import {Ability} from "../model/ability";
 import {DeckService} from "../services/deck/deck.service";
@@ -18,6 +16,7 @@ import {CharactersStore} from "../store/characters.store";
 import {JsonPipe, NgOptimizedImage} from "@angular/common";
 import {CardService} from "../services/card/card.service";
 
+
 @Component({
   selector: 'app-character',
   standalone: true,
@@ -27,8 +26,8 @@ import {CardService} from "../services/card/card.service";
 })
 
 export class CharacterComponent implements OnInit {
-  @ViewChild('money', {read: ElementRef}) valueElement: ElementRef | undefined;
-  @ViewChildren('characterCard') characterCards: QueryList<ElementRef> | undefined;
+  moneyElement = viewChild.required<ElementRef<HTMLElement>>('moneyElement')
+  characterCards = viewChildren<ElementRef<HTMLElement>>('characterCard')
 
   charactersStore = inject(CharactersStore)
   characters: Character[] = []
@@ -39,6 +38,8 @@ export class CharacterComponent implements OnInit {
   errorMessage = signal('');
   _message$ = new Subject<string>();
   public specialAbilities: Ability | undefined;
+  private wasm: any;
+  wasmReady = new BehaviorSubject<boolean>(false)
 
   constructor(
     private deckService: DeckService,
@@ -47,10 +48,11 @@ export class CharacterComponent implements OnInit {
     private cardService: CardService
   ) {
     this.specialAbilities = undefined;
+    this.loadAnimateCounterWasmModule('assets/wasm/animate_counter_bg.wasm')
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
     let challengeId = this.route.snapshot.paramMap.get('challengeId');
     this.loadCharacters().then(characters => {
       this.characters = characters;
@@ -66,6 +68,18 @@ export class CharacterComponent implements OnInit {
 
   async loadCharacters(): Promise<Character[]> {
     return await this.charactersStore.loadAll()
+  }
+
+  async loadAnimateCounterWasmModule(url: string) {
+    try {
+      const response = await fetch(url);
+      const bytes = await response.arrayBuffer();
+      const results = await WebAssembly.instantiate(bytes);
+      this.wasm = results.instance.exports;
+      this.wasmReady.next(true);
+    } catch (e) {
+      console.error('Failed to load WebAssembly module:', e);
+    }
   }
 
 
@@ -116,32 +130,29 @@ export class CharacterComponent implements OnInit {
   }
 
   private animateCounter(newMoney: number, oldMoney: number) {
-    const counts = setInterval(updated);
+    if (!this.moneyElement) return;
+    const countElement = this.moneyElement();
     let upto = oldMoney;
 
-    function updated() {
-      const count = document.getElementsByClassName("money")[0] as HTMLElement;
-      if (count) {
-        if (newMoney > oldMoney)
-          count.innerHTML = (++upto).toString();
-        else if (newMoney < oldMoney)
-          count.innerHTML = (--upto).toString();
-        if (upto === newMoney) {
-          clearInterval(counts);
-        }
-      } else {
-        clearInterval(counts);
+    const updateCount = () => {
+      upto = this.wasm.animate_counter(upto, newMoney);
+
+      countElement.nativeElement.textContent = upto.toString();
+      if (upto === newMoney) {
+        clearInterval(interval);
       }
-    }
+    };
+
+    const interval = setInterval(updateCount, 10);
   }
 
   private animateCard(index: number) {
-    const card = document.getElementsByClassName("character-card")[index] as HTMLElement;
+    const card = this.characterCards()[index]
     if (card) {
-      card.classList.add("shake");
+      card.nativeElement.classList.add("shake");
 
-      card.addEventListener('animationend', () => {
-        card.classList.remove("shake");
+      card.nativeElement.addEventListener('animationend', () => {
+        card.nativeElement.classList.remove("shake");
       }, { once: true });
     }
   }

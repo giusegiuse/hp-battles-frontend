@@ -1,3 +1,5 @@
+import {Character} from "./character";
+
 export class Ability {
   constructor(
     public name: string,
@@ -5,10 +7,14 @@ export class Ability {
     public type: AbilityType,
     public duration: number
   ) {  }
+
+  activate(character: Character): void {
+  }
 }
 
 export enum AbilityType{
-  Potenziante = 'potenziante',
-  Invulnerabilita = 'invulnerabilità',
-  Danno = 'danno'
+  Empowering = 'empowering',
+  Protection = 'protection',
+  Poison = 'poison',
+  Blocker = 'blocker'
 }

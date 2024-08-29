@@ -23,6 +23,7 @@ $secondary-border-color: #ae0001;
   animation: slide-in 0.2s ease-out forwards;
   transition: opacity 0s ease-in-out, transform 0.1s ease-in-out;
   position: relative;
+  cursor: pointer;
 
   &.selected {
     transition: box-shadow 0.3s ease;
@@ -216,6 +217,22 @@ $secondary-border-color: #ae0001;
       }
     }
 
+    .ability-button {
+      cursor: pointer;
+      border: 2px solid transparent;
+      background-color: transparent;
+      height: 40px;
+      width: 100%;
+      color: black;
+      font-size: 0.8em;
+      box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
+
+      &.selected {
+        transition: box-shadow 0.3s ease;
+        box-shadow: 0 0 15px 5px white;
+      }
+    }
+
     .ability {
       display: flex;
       flex-direction: row;
@@ -248,6 +265,7 @@ $secondary-border-color: #ae0001;
       .special-ability {
         padding: 0 10px;
         text-align: center;
+
       }
 
       .cost {

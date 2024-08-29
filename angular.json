@@ -25,7 +25,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "src/assets/wasm",
+                "output": "/assets/wasm/"
+              }
             ],
             "styles": [
               "src/styles.scss"
@@ -107,6 +112,48 @@
             "lintFilePatterns": [
               "src/**/*.ts",
               "src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "animate-counter": {
+      "projectType": "library",
+      "root": "projects/animate-counter",
+      "sourceRoot": "projects/animate-counter/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/animate-counter/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/animate-counter/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/animate-counter/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/animate-counter/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/animate-counter/**/*.ts",
+              "projects/animate-counter/**/*.html"
             ]
           }
         }

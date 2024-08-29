@@ -1,10 +1,5 @@
 <div *ngIf="character" class="character-card" [style.animation-delay.ms]="i() * 200"
-     [class.selected]="characterIsSelected()"
-     [class.gryffindor]="character().faction === 'Gryffindor'"
-     [class.hufflepuff]="character().faction === 'Hufflepuff'"
-     [class.ravenclaw]="character().faction === 'Ravenclaw'"
-     [class.bad]="character().faction === 'bad'"
-     [class.no-life]="character().life === 0"
+     [ngClass]="cardClasses()"
      [style.background]="getCardBackground(character())"
      [style.height]="getCardHeight()"
      [style.width]="getCardWidth()"
@@ -23,11 +18,11 @@
 <div class="info-section">
   <div class="special-ability">
 
-    <b>{{ character().specialAbility.name }}</b>
-    <button type="button" class="btn btn-outline-secondary me-2" [ngbTooltip]="character().specialAbility.description" tooltipClass="my-custom-class"
-            placement="top">
-      <img src="./assets/icons/tooltip.svg">
-    </button>
+    <button class="ability-button" (click)="selectAbility($event, character()._id)"
+            [class.selected]="abilityIsSelected()"
+            [ngbTooltip]="character().specialAbility.description" tooltipClass="my-custom-class"><b>{{ character().specialAbility.name }}</b>
+ </button>
+
     <!--          <div class="ability-description">{{ character.specialAbilities?.description }}</div>-->
   </div>
   <div class="ability">
